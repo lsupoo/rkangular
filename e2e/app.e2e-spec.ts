@@ -1,10 +1,10 @@
-import { Smartadmin4Page } from './app.po';
+import { NewCliTestPage } from './app.po';
 
-describe('smartadmin4 App', () => {
-  let page: Smartadmin4Page;
+describe('new-cli-test App', function() {
+  let page: NewCliTestPage;
 
   beforeEach(() => {
-    page = new Smartadmin4Page();
+    page = new NewCliTestPage();
   });
 
   it('should display message saying app works', () => {

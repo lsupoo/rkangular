@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class Smartadmin4Page {
+export class NewCliTestPage {
   navigateTo() {
     return browser.get('/');
   }
