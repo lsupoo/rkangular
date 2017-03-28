@@ -1,0 +1,333 @@
+<div id="content" class="search-view">
+
+    <p-growl [value]="msgs"></p-growl>
+
+    <div class="row">
+        <div class="page-header">
+            <sa-big-breadcrumbs [items]="['Consulta de Permisos']" icon="group"></sa-big-breadcrumbs>
+        </div>
+    </div>
+
+    <!-- widget grid -->
+    <sa-widgets-grid>
+
+        <!-- START ROW -->
+        <div class="row">
+            <!-- NEW COL START -->
+            <article class="col-sm-12 col-md-12 col-lg-12">
+                <div class="smart-form">
+
+                    <kendo-tabstrip>
+                        <kendo-tabstrip-tab [title]="'B&uacute;squeda R&aacute;pida'" [selected]="true">
+                            <template kendoTabContent>
+
+                                <div class="row">
+                                    <div class="col col-3">
+                                        <label>Buscar por</label>
+                                        <label class="input">
+                                            <input type="text" [(ngModel)]="quickFilter.value"
+                                                   placeholder="Nombres, Apellido Paterno y/o Apellido Materno"
+                                                   (keypress)="validaEnter($event)">
+                                        </label>
+                                    </div>
+                                    <div class="col col-3">
+                                        <label>Desde</label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-calendar"></i>
+                                            <input type="text" id="datepickerDesde"
+                                                   placeholder="Seleccionar una Fecha"
+                                                   [textMask]="{mask: dateTimeMask,guide:false}"
+                                                   [(ngModel)]="quickFilter.desde"
+                                                   (change)="onChangeQuickSearhFechaDesde($event)"
+                                                   (keypress)="validaEnter($event)"
+                                                   (keyup)="keyUpLenghtInput($event)"
+                                                   (ngModelChange)="onModelChangeDatePickerInput($event,'datepickerDesde')"
+                                                   saUiDatepicker/>
+                                        </label>
+                                    </div>
+
+                                    <div class="col col-3">
+                                        <label>Hasta</label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-calendar"></i>
+                                            <input type="text" id="datepickerHasta"
+                                                   [textMask]="{mask: dateTimeMask,guide:false}"
+                                                   placeholder="Seleccionar una Fecha"
+                                                   [(ngModel)]="quickFilter.hasta"
+                                                   (change)="onChangeQuickSearhFechaHasta($event)"
+                                                   (keypress)="validaEnter($event)"
+                                                   (keyup)="keyUpLenghtInput($event)"
+                                                   (ngModelChange)="onModelChangeDatePickerInput($event,'datepickerHasta')"
+                                                   saUiDatepicker/>
+                                        </label>
+                                    </div>
+                                    <div class="col col-3">
+                                        <label class="label-dummy">&nbsp;</label>
+                                        <button type="submit" class="btn btn-lg btn-primary" (click)="onQuickSearck()">
+                                            Buscar
+                                        </button>
+                                    </div>
+                                </div>
+                            </template>
+                        </kendo-tabstrip-tab>
+                        <kendo-tabstrip-tab [title]="'B&uacute;squeda Avanzada'">
+                            <template kendoTabContent>
+                                <div class="row">
+
+                                    <section class="col col-4">
+                                        <label>Empleado</label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-search"></i>
+                                            <ng2-completer [(ngModel)]="busquedaPermisos.nombreEmpleado"
+
+                                                           (value)="busquedaPermisos.nombreEmpleado"
+
+                                                           [dataService]="dataServiceEmpleado"
+                                                           [minSearchLength]="0"
+                                                           (selected)="selectEmpleado($event)"
+                                                           (keypress)="validaEnter($event)"
+
+                                                           (keyup)="validateFilterEmptyEmpleado($event)">
+
+                                            </ng2-completer>
+
+                                        </label>
+                                    </section>
+
+                                    <section class="col col-4">
+                                        <label>Desde</label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-calendar"></i>
+                                            <input type="text" id="datepickerDesdeAdvance"
+                                                   placeholder="Seleccionar una Fecha"
+                                                   [textMask]="{mask: dateTimeMask,guide:false}"
+                                                   [(ngModel)]="busquedaPermisos.desde"
+                                                   (change)="onChangeFechaDesde($event)"
+                                                   (keypress)="validaEnter($event)"
+                                                   (keyup)="keyUpLenghtInput($event)"
+                                                   (ngModelChange)="onModelChangeDatePickerInput($event,'datepickerDesdeAdvance')"
+                                                   saUiDatepicker/>
+                                        </label>
+                                    </section>
+
+                                    <section class="col col-4">
+                                        <label>Hasta</label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-calendar"></i>
+                                            <input type="text" id="datepickerHastaAdvance"
+                                                   [textMask]="{mask: dateTimeMask,guide:false}"
+                                                   placeholder="Seleccionar una Fecha"
+                                                   [(ngModel)]="busquedaPermisos.hasta"
+                                                   (change)="onChangeFechaHasta($event)"
+                                                   (keypress)="validaEnter($event)"
+                                                   (keyup)="keyUpLenghtInput($event)"
+                                                   (ngModelChange)="onModelChangeDatePickerInput($event,'datepickerHastaAdvance')"
+                                                   saUiDatepicker/>
+                                        </label>
+                                    </section>
+
+                                </div>
+
+                                <div class="row">
+
+                                    <section class="col col-4">
+                                        <label>Unidad de negocio</label>
+                                        <label class="input">
+                                            <kendo-dropdownlist
+                                                    [data]="unidadDeNegocio"
+                                                    [textField]="'nombre'"
+                                                    [valueField]="'idUnidadDeNegocio'"
+                                                    [(ngModel)]="unidadNegocioSelect"
+                                                    [defaultItem]="defaultItemUndNegocio"
+                                                    (selectionChange)="actualizarDpto($event)"
+                                                    [value]="unidadNegocioSelect"
+                                                    style="width: 100%;"
+                                            >
+                                            </kendo-dropdownlist>
+                                        </label>
+                                    </section>
+
+                                    <section class="col col-4">
+                                        <label>Departamento</label>
+                                        <label class="input">
+                                            <kendo-dropdownlist
+                                                    [data]="departamentoArea"
+                                                    [textField]="'nombre'"
+                                                    [valueField]="'idDepartamentoArea'"
+                                                    [(ngModel)]="departamentoSelect"
+                                                    [defaultItem]="defaultItemDepartamento"
+                                                    [value]="departamentoSelect"
+                                                    (selectionChange)="actualizarProyecto($event)"
+                                                    style="width: 100%;"
+
+                                            >
+                                            </kendo-dropdownlist>
+                                        </label>
+                                    </section>
+
+                                    <section class="col col-4">
+                                        <label>Proyecto</label>
+                                        <label class="input">
+                                            <kendo-dropdownlist
+                                                    [data]="proyecto"
+                                                    [textField]="'nombre'"
+                                                    [valueField]="'idProyecto'"
+                                                    [defaultItem]="defaultItemProyecto"
+                                                    [(ngModel)]="proyectoSelect"
+                                                    [value]="proyectoSelect"
+                                                    style="width: 100%;"
+
+                                            >
+                                            </kendo-dropdownlist>
+                                        </label>
+                                    </section>
+
+                                </div>
+
+                                <div class="row">
+
+                                    <section class="col col-4">
+                                        <label>Jefe inmediato</label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-search"></i>
+                                            <ng2-completer [(ngModel)]="busquedaPermisos.jefeInmediato"
+                                                           [dataService]="dataServiceJefeInmediato"
+                                                           [minSearchLength]="0"
+                                                           (selected)="selectJefeInmediato($event)"
+                                                           (keyup)="validateFilterEmptyJefeInmediato($event)"></ng2-completer>
+                                        </label>
+                                    </section>
+
+                                    <!--section class="col col-4">
+                                        <label>Codigo</label>
+                                        <label class="input">
+                                            <input type="text" name="codigoPermiso"  [(ngModel)]="busquedaPermisos.codigoPermiso" (keypress)="validaEnter($event)">
+                                        </label>
+                                    </section-->
+
+
+                                    <section class="col col-4">
+                                        <label>Estado</label>
+                                        <label class="input">
+                                            <kendo-dropdownlist
+                                                    [data]="estados"
+                                                    [defaultItem]="defaultItemTablaGeneral"
+                                                    [textField]="'nombre'"
+                                                    [valueField]="'codigo'"
+                                                    [valuePrimitive]="true"
+                                                    [(ngModel)]="busquedaPermisos.estado"
+                                                    [value]="busquedaPermisos.estado"
+                                                    style="width: 100%;"
+                                            >
+
+                                            </kendo-dropdownlist>
+                                        </label>
+                                    </section>
+                                </div>
+
+                                <div class="search-bar">
+                                    <button type="button" class="btn btn-lg btn-default" (click)="onLimpiar()">
+                                        Limpiar
+                                    </button>
+                                    <button type="submit" class="btn btn-lg btn-primary" (click)="onSubmit()">Buscar
+                                    </button>
+                                </div>
+                            </template>
+                        </kendo-tabstrip-tab>
+                    </kendo-tabstrip>
+
+
+                </div> <!-- end form -->
+            </article>
+            <!-- END COL -->
+
+        </div>
+
+        <!-- END ROW -->
+
+    </sa-widgets-grid>
+
+    <!-- widget grid -->
+    <sa-widgets-grid>
+
+        <!-- START ROW -->
+        <div class="row">
+
+
+            <!-- NEW COL START -->
+            <article class="col-sm-12">
+
+                <sa-widget [colorbutton]="false" [editbutton]="false" [fullscreenbutton]="false" [custombutton]="false"
+                           [sortable]="false" [deletebutton]="false">
+
+                    <header>
+
+                        <h2>Resultados {{permisos.length}} </h2>
+
+                    </header>
+                    <div class="widget-body">
+
+                        <fieldset>
+                            <div [ngBusy]="{busy: busy, minDuration:1000}"></div>
+
+                            <kendo-grid
+                                    [data]="gridView"
+                                    [pageSize]="pageSize"
+                                    [skip]="skip"
+                                    [pageable]="true"
+                                    (pageChange)="pageChangePermisos($event)"
+                            >
+                                <!-- <kendo-grid-column field="idPermiso" title=" " [width]="40" *ngIf="isAuthorized('Editar') && onlyMyInformation">
+                                    <template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-center">
+                                            <a href="javascript:void(0)" class="link" (click)="onEdit(dataItem)">
+                                                <span class="fa fa-pencil"></span></a>
+                                        </div>
+                                    </template>
+                                </kendo-grid-column> -->
+                                <kendo-grid-column field="idPermiso" title=" " [width]="40">
+                                    <template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-center">
+                                            <a href="javascript:void(0)" class="link" (click)="onEdit(dataItem)">
+                                                <span class="fa fa-pencil"></span></a>
+                                        </div>
+                                    </template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="idDelete" title=" " [width]="40"
+                                                   *ngIf="isAuthorized('Eliminar') && isRhana">
+                                    <template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-center">
+                                            <a href="javascript:void(0)" class="link" (click)="confirm(dataItem)">
+                                                <span class="fa fa-trash"></span></a>
+                                        </div>
+
+                                    </template>
+                                </kendo-grid-column>
+
+                                <kendo-grid-column field="nombreEmpleado" title="Empleado"
+                                                   [width]="250"></kendo-grid-column>
+                                <kendo-grid-column field="estado" title="Estado" [width]="100"></kendo-grid-column>
+                                <kendo-grid-column field="motivo" title="Motivo" [width]="200"></kendo-grid-column>
+                                <kendo-grid-column field="fecha" title="Fecha" [width]="100"></kendo-grid-column>
+                                <kendo-grid-column field="horaInicio" title="Desde" [width]="100"></kendo-grid-column>
+                                <kendo-grid-column field="horaFin" title="Hasta" [width]="100"></kendo-grid-column>
+                                <kendo-grid-column field="horas" title="Horas" [width]="100"></kendo-grid-column>
+                                <kendo-grid-column field="nombreJefeInmediato" title="Jefe Inmediato"
+                                                   [width]="250"></kendo-grid-column>
+
+                            </kendo-grid>
+                            <motivo-rechazobusqueda-form [model]="dataItem" id="rechazo"
+                                                         (save)="onRechazar($event)"></motivo-rechazobusqueda-form>
+                            <confirm-dialog-form [model]="dataItem" (accept)="onDelete($event)"></confirm-dialog-form>
+                        </fieldset>
+                    </div>
+                </sa-widget>
+
+            </article>
+            <!-- END COL -->
+
+        </div>
+
+
+    </sa-widgets-grid>
+</div>

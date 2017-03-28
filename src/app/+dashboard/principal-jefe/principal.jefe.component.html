@@ -1,0 +1,384 @@
+<div id="content">
+    <p-growl [value]="msgs"></p-growl>
+
+    <div class="row">
+        <div class="page-header">
+            <sa-big-breadcrumbs [items]="['Dashboard']" icon="group"></sa-big-breadcrumbs>
+        </div>
+        <div class="col-lg-12">
+            <!-- row -->
+
+            <div class="well well-light">
+                <div>
+                    <fieldset class="margin-bottom-15px">
+                        <div class="smart-form">
+                            <kendo-tabstrip>
+                                <kendo-tabstrip-tab [title]="'Asistencia'" [selected]="true">
+                                    <template kendoTabContent>
+                                        <fieldset>
+                                            <div class="row">
+                                                <section class="col col-3">
+                                                    <label>Unidad de negocio</label>
+                                                    <label class="input">
+                                                        <kendo-dropdownlist
+                                                                [data]="unidadDeNegocio"
+                                                                [textField]="'nombre'"
+                                                                [valueField]="'idUnidadDeNegocio'"
+                                                                [(ngModel)]="unidadNegocioSelect"
+                                                                [defaultItem]="defaultItemUndNegocio"
+                                                                (selectionChange)="actualizarDpto($event)"
+                                                                [value] = "unidadNegocioSelect"
+                                                                style="width: 100%;"
+                                                        >
+                                                        </kendo-dropdownlist>
+                                                    </label>
+                                                </section>
+
+                                                <section class="col col-3">
+                                                    <label>Departamento</label>
+                                                    <label class="input">
+                                                        <kendo-dropdownlist
+                                                                [data]="departamentoArea"
+                                                                [textField]="'nombre'"
+                                                                [valueField]="'idDepartamentoArea'"
+                                                                [(ngModel)]="departamentoSelect"
+                                                                [defaultItem]="defaultItemDepartamento"
+                                                                [value] = "departamentoSelect"
+                                                                (selectionChange)="actualizarProyecto($event)"
+                                                                style="width: 100%;"
+
+                                                        >
+                                                        </kendo-dropdownlist>
+                                                    </label>
+                                                </section>
+
+                                                <section class="col col-3">
+                                                    <label>Proyecto</label>
+                                                    <label class="input">
+                                                        <kendo-dropdownlist
+                                                                [data]="proyecto"
+                                                                [textField]="'nombre'"
+                                                                [valueField]="'idProyecto'"
+                                                                [defaultItem]="defaultItemProyecto"
+                                                                [(ngModel)]="proyectoSelect"
+                                                                [value] = "proyectoSelect"
+                                                                style="width: 100%;"
+                                                                (selectionChange)="selectProyecto($event)"
+
+                                                        >
+                                                        </kendo-dropdownlist>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-2">
+                                                    <label>Fecha</label>
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" id="datepickerFecha"
+                                                               [textMask]="{mask: dateTimeMask,guide:false}"
+                                                               [(ngModel)]="busquedaMarcacionesJefe.fecha"
+                                                               (keyup)="keyUpLenghtInput($event)"
+                                                               (ngModelChange)="dateModelChangeFechaBoolean($event)"
+                                                               (change)="onChangeFecha($event)"
+                                                               saUiDatepicker />
+                                                    </label>
+                                                </section>
+                                                <section class="col col-1">
+                                                    <div class="col col-6">
+                                                        <label class="label-dummy">&nbsp;</label>
+                                                        <button type="submit" class="btn btn-lg btn-primary" (click)="onRefreshFiltro()">
+                                                            <i class="fa fa-refresh" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                            <div class="row">
+                                                <section class="col-xs-3 col-md-3">
+                                                    <div style="display: block; cursor: pointer;">
+                                                        <canvas baseChart width="50" height="50"
+                                                                [data]="pieChartData"
+                                                                [labels]="pieChartLabels"
+                                                                [colors]="colorsEmptyObject"
+                                                                [chartType]="pieChartType"
+                                                                (chartClick)="chartClicked($event)"></canvas>
+                                                    </div>
+                                                </section>
+                                                <section class="col-xs-1 col-md-1">
+                                                </section>
+                                                <section class="col-xs-8 col-md-8">
+                                                    <div [ngBusy]="{busy: busy, minDuration:1000}"></div>
+                                                    <kendo-grid
+                                                            [data]="gridView"
+                                                            [pageSize]="pageSize"
+                                                            [skip]="skip"
+                                                            [pageable]="true"
+                                                            (pageChange)="pageChangeMarcaciones($event)"
+                                                    >
+                                                        <kendo-grid-column field="nombreCompletoEmpleado" title="Empleado" [width]="70"></kendo-grid-column>
+                                                        <kendo-grid-column field="fecha" title="Fecha" [width]="30"></kendo-grid-column>
+                                                        <kendo-grid-column *ngIf="busquedaMarcacionesJefe.tipoMarcacion == 'E'" field="horaIngresoHorario" title="Horario" [width]="25"></kendo-grid-column>
+                                                        <kendo-grid-column *ngIf="busquedaMarcacionesJefe.tipoMarcacion == 'E'" field="horaIngreso" title="Marcacion" [width]="25"></kendo-grid-column>
+                                                        <kendo-grid-column *ngIf="busquedaMarcacionesJefe.tipoMarcacion == 'E'" field="demoraEntrada" [width]="25">
+                                                            <template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                                                                Demora<br/>Entrada
+                                                            </template>
+                                                        </kendo-grid-column>
+                                                    </kendo-grid>
+                                                </section>
+                                            </div>
+                                        </fieldset>
+                                    </template>
+                                </kendo-tabstrip-tab>
+                                <kendo-tabstrip-tab [title]="'Marcaci&oacute;n'">
+                                    <template kendoTabContent>
+                                        <fieldset>
+                                            <div class="row">
+                                                <section class="col col-3">
+                                                    <label>Unidad de negocio</label>
+                                                    <label class="input">
+                                                        <kendo-dropdownlist
+                                                                [data]="unidadDeNegocio"
+                                                                [textField]="'nombre'"
+                                                                [valueField]="'idUnidadDeNegocio'"
+                                                                [(ngModel)]="unidadNegocioSelect"
+                                                                [defaultItem]="defaultItemUndNegocio"
+                                                                (selectionChange)="actualizarDpto($event)"
+                                                                [value] = "unidadNegocioSelect"
+                                                                style="width: 100%;"
+                                                        >
+                                                        </kendo-dropdownlist>
+                                                    </label>
+                                                </section>
+
+                                                <section class="col col-3">
+                                                    <label>Departamento</label>
+                                                    <label class="input">
+                                                        <kendo-dropdownlist
+                                                                [data]="departamentoArea"
+                                                                [textField]="'nombre'"
+                                                                [valueField]="'idDepartamentoArea'"
+                                                                [(ngModel)]="departamentoSelect"
+                                                                [defaultItem]="defaultItemDepartamento"
+                                                                [value] = "departamentoSelect"
+                                                                (selectionChange)="actualizarProyecto($event)"
+                                                                style="width: 100%;"
+
+                                                        >
+                                                        </kendo-dropdownlist>
+                                                    </label>
+                                                </section>
+
+                                                <section class="col col-3">
+                                                    <label>Proyecto</label>
+                                                    <label class="input">
+                                                        <kendo-dropdownlist
+                                                                [data]="proyecto"
+                                                                [textField]="'nombre'"
+                                                                [valueField]="'idProyecto'"
+                                                                [defaultItem]="defaultItemProyecto"
+                                                                [(ngModel)]="proyectoSelect"
+                                                                [value] = "proyectoSelect"
+                                                                style="width: 100%;"
+                                                                (selectionChange)="selectProyecto($event)"
+
+                                                        >
+                                                        </kendo-dropdownlist>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-3">
+                                                    <label>Fecha</label>
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" id="datepickerFechaMarcacion"
+                                                               [(ngModel)]="busquedaMarcacionesJefe.fecha"
+                                                               (change)="onChangeFecha($event)"
+                                                               saUiDatepicker readonly />
+                                                    </label>
+                                                </section>
+                                            </div>
+                                            <div class="row">
+                                                <section class="col-xs-12 col-md-12">
+                                                    <div [ngBusy]="{busy: busy, minDuration:1000}"></div>
+                                                    <kendo-grid
+                                                            [data]="gridView"
+                                                            [pageSize]="pageSize"
+                                                            [skip]="skip"
+                                                            [pageable]="true"
+                                                            (pageChange)="pageChangeMarcaciones($event)"
+                                                    >
+                                                        <kendo-grid-column field="nombreCompletoEmpleado" title="Empleado" [width]="90"></kendo-grid-column>
+                                                        <kendo-grid-column field="fecha" title="Fecha" [width]="35"></kendo-grid-column>
+                                                        <kendo-grid-column field="horaIngresoHorario" [width]="35">
+                                                            <template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                                                                Entrada <br/>Esperada
+                                                            </template>
+                                                        </kendo-grid-column>
+                                                        <kendo-grid-column field="horaIngreso" [width]="35">
+                                                            <template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                                                                Entrada <br/>Real
+                                                            </template>
+                                                        </kendo-grid-column>
+                                                        <kendo-grid-column field="horaInicioAlmuerzo" [width]="30">
+                                                            <template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                                                                Almuerzo <br/>Inicio
+                                                            </template>
+                                                        </kendo-grid-column>
+                                                        <kendo-grid-column field="horaFinAlmuerzo" [width]="30">
+                                                            <template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                                                                Almuerzo <br/>Fin
+                                                            </template>
+                                                        </kendo-grid-column>
+                                                        <kendo-grid-column field="horaSalidaHorario" [width]="30">
+                                                            <template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                                                                Salida<br/>Esperada
+                                                            </template>
+                                                        </kendo-grid-column>
+                                                        <kendo-grid-column field="horaSalida" [width]="35">
+                                                            <template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                                                                Salida<br/>Real
+                                                            </template>
+                                                        </kendo-grid-column>
+
+                                                    </kendo-grid>
+                                                </section>
+                                            </div>
+                                        </fieldset>
+                                    </template>
+                                </kendo-tabstrip-tab>
+                            </kendo-tabstrip>
+                            <!--<section class="col col-3">
+                                <label>Tipo Marcaci&oacute;n</label>
+                                <label class="input">
+                                    <kendo-dropdownlist
+                                            [data]="tipoMarcacion"
+                                            [textField]="'nombre'"
+                                            [valueField]="'codigo'"
+                                            [valuePrimitive]="true"
+                                            [value]="selectedPrimitive"
+                                            (selectionChange)="selectTipoMarcacion($event)"
+                                            style="width: 100%;"
+
+                                    >
+                                    </kendo-dropdownlist>
+                                </label>
+                            </section>-->
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Solicitudes por Atender</legend>
+                        <kendo-tabstrip>
+                            <kendo-tabstrip-tab [title]="'Permisos'" [selected]="true">
+                                <template kendoTabContent>
+                                    <fieldset>
+                                        <div [ngBusy]="{busy: busy, minDuration:1000}"></div>
+
+                                        <kendo-grid
+                                                [data]="gridViewPermiso"
+                                                [pageSize]="pageSizePermiso"
+                                                [skip]="skipPermiso"
+                                                [pageable]="true"
+                                                (pageChange)="pageChangePermiso($event)"
+                                        >
+                                            <kendo-grid-column [width]="40">
+                                                <template kendoGridCellTemplate let-dataItem>
+                                                    <div class="text-center">
+                                                        <a href="javascript:void(0)" class="link" (click)="onEditPermiso(dataItem)">
+                                                            <span class="fa fa-pencil"></span></a>
+                                                    </div>
+                                                </template>
+                                            </kendo-grid-column>
+                                            <kendo-grid-column field="estado" title="Estado" [width]="100"></kendo-grid-column>
+                                            <kendo-grid-column field="nombreEmpleado" title="Empleado" [width]="250"></kendo-grid-column>
+                                            <kendo-grid-column field="motivo" title="Motivo" [width]="150"></kendo-grid-column>
+                                            <kendo-grid-column field="fecha" title="Fecha" [width]="100"></kendo-grid-column>
+                                            <kendo-grid-column field="horaInicio" title="Desde" [width]="100"></kendo-grid-column>
+                                            <kendo-grid-column field="horaFin" title="Hasta" [width]="100"></kendo-grid-column>
+                                            <kendo-grid-column field="horas" title="Horas" [width]="100"></kendo-grid-column>
+                                        </kendo-grid>
+
+
+                                    </fieldset>
+                                </template>
+                            </kendo-tabstrip-tab>
+                            <kendo-tabstrip-tab [title]="'Vacaciones'">
+                                <template kendoTabContent>
+                                    <fieldset>
+                                        <div [ngBusy]="{busy: busy, minDuration:1000}"></div>
+
+                                        <kendo-grid
+                                                [data]="gridViewVacacion"
+                                                [pageSize]="pageSizeVacacion"
+                                                [skip]="skipVacacion"
+                                                [pageable]="true"
+                                                (pageChange)="pageChangeVacacion($event)"
+                                        >
+                                            <kendo-grid-column [width]="40" >
+                                                <template kendoGridCellTemplate let-dataItem>
+                                                    <div class="text-center">
+                                                        <a href="javascript:void(0)" class="link" (click)="onEditVacacion(dataItem)">
+                                                            <span class="fa fa-pencil"></span></a>
+                                                    </div>
+                                                </template>
+                                            </kendo-grid-column>
+                                            <kendo-grid-column field="estado" title="Estado" [width]="100"></kendo-grid-column>
+                                            <kendo-grid-column field="nombreEmpleado" title="Empleado" [width]="250"></kendo-grid-column>
+                                            <kendo-grid-column field="fechaInicio" title="Desde" [width]="100"></kendo-grid-column>
+                                            <kendo-grid-column field="fechaFin" title="Hasta" [width]="100"></kendo-grid-column>
+                                            <kendo-grid-column field="diasCalendarios" title="D&iacute;as calendarios" [width]="140"></kendo-grid-column>
+                                            <kendo-grid-column field="diasHabiles" title="D&iacute;as h&aacute;biles" [width]="120"></kendo-grid-column>
+                                        </kendo-grid>
+
+
+                                    </fieldset>
+                                </template>
+                            </kendo-tabstrip-tab>
+                            <kendo-tabstrip-tab [title]="'Horas Extra'">
+                                <template kendoTabContent>
+                                    <fieldset>
+                                        <div [ngBusy]="{busy: busy, minDuration:1000}"></div>
+
+                                        <kendo-grid
+                                                [data]="gridViewHorasExtras"
+                                                [pageSize]="pageSizeHorasExtras"
+                                                [skip]="skipHorasExtras"
+                                                [pageable]="true"
+                                                (pageChange)="pageChangeHorasExtras($event)"
+                                        >
+                                            <kendo-grid-column field="idViewHorasExtras" title=" " [width]="40" >
+                                                <template kendoGridCellTemplate let-dataItem>
+                                                    <div class="text-center">
+                                                        <a href="javascript:void(0)" class="link" (click)="onEditHorasExtras(dataItem)">
+                                                            <span class="fa fa-pencil"></span></a>
+                                                    </div>
+                                                </template>
+                                            </kendo-grid-column>
+                                            <kendo-grid-column field="estado" title="Estado" [width]="100"></kendo-grid-column>
+                                            <kendo-grid-column field="nombreEmpleado" title="Empleado" [width]="120"></kendo-grid-column>
+                                            <kendo-grid-column field="fecha" title="Fecha" [width]="120"></kendo-grid-column>
+                                            <kendo-grid-column field="horaSalidaHorario" title="Hora Salida" [width]="80"></kendo-grid-column>
+                                            <kendo-grid-column field="horaSalidaSolicitado" [width]="80">
+                                                <template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                                                    Hora Salida<br/>Solicitada
+                                                </template>
+                                            </kendo-grid-column>
+                                            <kendo-grid-column field="horasNoCompensables" [width]="100">
+                                                <template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                                                    Horas Semanales<br/>Pendiente
+                                                </template>
+                                            </kendo-grid-column>
+                                            <kendo-grid-column field="horas" title="Horas Extras" [width]="80"></kendo-grid-column>
+                                        </kendo-grid>
+                                    </fieldset>
+                                </template>
+                            </kendo-tabstrip-tab>
+                        </kendo-tabstrip>
+                    </fieldset>
+
+                </div>
+
+            </div>
+
+            <!-- end row -->
+
+        </div>
+    </div>
+</div>

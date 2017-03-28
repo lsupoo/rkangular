@@ -1,0 +1,149 @@
+<div id="content">
+
+	<p-growl [value]="msgs"></p-growl>
+
+	<div class="row">
+
+		<div class="page-header">
+			<div class="btn-back" (click)="onRegresarBusquedaHorasExtra()"><i class="ic-arrow-back"></i></div>
+			<sa-big-breadcrumbs [items]="['Horas extra ']" icon="group"></sa-big-breadcrumbs>
+		</div>
+
+			<div class="col-lg-12">
+
+							<div class="well well-sm well-light">
+
+								<div class="padding-10">
+
+									<div>
+										<fieldset>
+											<legend>Datos</legend>
+											<div class="smart-form">
+
+												<div class="row">
+
+													<section class="col col-md-4">
+														<label>Jefe Inmediato</label>
+														<label class="input state-disabled">
+															<input type="text" [(ngModel)]="historiaLaboralActual.jefeInmediato" [disabled]="true"/>
+														</label>
+
+													</section>
+													<section class="col col-md-4">
+														<label>Fecha</label>
+														<label [ngClass]="getEditableClass('Editar')">
+															<i class="icon-append fa fa-calendar"></i>
+															<input type="text" name="fecha" id="fecha" saUiDatepicker date-format="dd/MM/yy"
+															placeholder="Seleccionar una Fecha" [disabled]="!isAuthorized('Editar')"
+															[(ngModel)]="horasExtra.fecha" />
+														</label>
+													</section>
+													
+												</div>
+
+												<div class="row">
+
+													<section class="col col-md-4">
+														<label>Horas Adicionales</label>
+														<label class="input state-disabled">
+															<input type="text" [(ngModel)]="horasExtra.horasAdicionales" [disabled]="true"/>
+														</label>
+
+													</section>
+													<section class="col col-md-8">
+														<label>Motivo</label>
+														<label [ngClass]="getEditableClass('Editar')">
+															<input type="text" name="motivo" id="motivo" [(ngModel)]="horasExtra.motivo"
+																   [disabled]="!isAuthorized('Editar')" readonly="readonly"/>
+														</label>
+													</section>
+
+												</div>
+
+											</div>
+										</fieldset>
+									</div>
+								</div>
+								<div class="padding-10">
+									<div>
+										<fieldset>
+											<legend>Información Adicional</legend>
+											<div class="smart-form">
+
+												<div class="row">
+
+													<section class="col col-md-4">
+														<label>Hora de Salida</label>
+														<label [ngClass]="getEditableClass('Editar')">
+															<input type="text" name="horaSalidaHorario" id="horaSalidaHorario" [(ngModel)]="horasExtra.horaSalidaHorario"
+																   [disabled]="isAuthorized('Editar')" />
+														</label>
+													</section>
+
+													<section class="col col-md-4">
+														<label>Hora de Salida Solicitado</label>
+														<label [ngClass]="getEditableClass('Editar')">
+															<input type="text" name="horaSalidaSolicitado" id="horaSalidaSolicitado" [disabled]="!isAuthorized('Editar')"
+																   [(ngModel)]="horasExtra.horaSalidaSolicitado" />
+														</label>
+													</section>
+
+
+
+
+												</div>
+
+												<div class="row">
+
+													<section class="col col-md-4">
+														<label>Horas Semanales Pendientes</label>
+														<label [ngClass]="getEditableClass('Editar')">
+															<input type="text" name="horasSemanalesPendientes" id="horasSemanalesPendientes"
+																   [(ngModel)]="horasExtra.horasNoCompensables"
+																   [disabled]="!isAuthorized('Editar')" />
+														</label>
+													</section>
+
+													<section class="col col-md-4">
+														<label>Total de Horas Extras</label>
+														<label [ngClass]="getEditableClass('Editar')">
+															<input type="text" name="horas" id="horas" [(ngModel)]="horasExtra.horas" readonly="readonly" [disabled]="!isAuthorized('Editar')"/>
+														</label>
+													</section>
+
+												</div>
+												<div class="row">
+
+
+
+													<section class="col col-md-8">
+														<label>Comentario Resolucion</label>
+														<label [ngClass]="getEditableClass('Editar')">
+															<input type="text" name="horas" id="comentario" [(ngModel)]="horasExtra.comentarioResolucion" readonly="readonly" [disabled]="!isAuthorized('Editar')"/>
+														</label>
+													</section>
+
+												</div>
+
+
+											</div>
+											<motivo-rechazohorasextra-form [model]="dataItem" id="rechazo" (save)="onRechazarHorasExtraEmpleado($event)"> </motivo-rechazohorasextra-form>
+
+										</fieldset>
+
+									</div>
+								</div>
+
+								<div class="padding-10">
+									<div class="bottom-bar">
+										<button (click)="onAprobarHorasExtraEmpleado()" class="btn btn-primary" *ngIf="isAuthorized('Aprobar') && authorizedButton"> Aprobar</button>
+										<button (click)="cargarMotivoRechazo()" class="btn btn-primary" *ngIf="isAuthorized('Rechazar') && authorizedButton"> Denegar</button>
+									</div>
+
+								</div>
+
+							</div>
+			</div>
+
+	</div>
+</div>

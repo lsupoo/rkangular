@@ -1,0 +1,83 @@
+<div id="content">
+
+    <p-growl [value]="msgs"></p-growl>
+    <div class="row">
+
+        <!--div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa-fw fa fa-group"></i>
+                <a (click)="onRegresarBusquedaConfiguracionesSistema()" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> </a> Configuracion del Sistema
+            </h1>
+        </div-->
+        <div class="page-header">
+            <div class="btn-back" (click)="onRegresarBusquedaConfiguracionesSistema()"><i class="ic-arrow-back"></i></div>
+            <sa-big-breadcrumbs [items]="['Configuracion del Sistema']" icon="group"></sa-big-breadcrumbs>
+        </div>
+
+            <div class="col-lg-12">
+
+                            <div class="well well-sm well-light">
+
+                                <div class="padding-10">
+
+                                    <div>
+                                        <fieldset>
+                                            <legend>Datos</legend>
+
+                                            <div class="smart-form">
+
+                                                <div class="row">
+                                                    <section class="col col-md-3">
+                                                        <label>C&oacute;digo</label>
+                                                        <label class="input state-disabled">
+                                                            <input type="text" [(ngModel)]="configuracionSistema.codigo" disabled="disabled"/>
+                                                        </label>
+
+                                                    </section>
+                                                </div>
+                                                <div class="row">
+                                                    <section class="col col-md-9">
+                                                        <label>Descripcion</label>
+                                                        <label [ngClass]="getEditableClass('Editar')">
+                                                            <input type="text" id="descripcion" [(ngModel)]="configuracionSistema.descripcion" [disabled]="!isAuthorized('Editar')"/>
+                                                        </label>
+
+                                                    </section>
+                                                    <section class="col col-md-2">
+                                                        <label>Valor</label>
+                                                        <label [ngClass]="getEditableClass('Editar')">
+                                                            <input type="text" id="valor" [(ngModel)]="configuracionSistema.valor" [disabled]="!isAuthorized('Editar')"/>
+                                                        </label>
+
+                                                    </section>
+
+                                                </div>
+
+                                            </div>
+                                        </fieldset>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="padding-10">
+                                    <div class="bottom-bar">
+                                        <button (click)="onGuardarConfiguracionSistema()" class="btn btn-primary" *ngIf="isAuthorized('Editar')"> Guardar</button>
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+
+            </div>
+            <!-- WIDGET END -->
+        </div>
+
+        <!-- end row -->
+
+
+
+
+</div>

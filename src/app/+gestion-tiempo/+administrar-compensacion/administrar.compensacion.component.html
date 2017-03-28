@@ -1,0 +1,186 @@
+<div id="content">
+
+	<div class="row">
+		<div class="page-header">
+			<div class="btn-back" (click)="onRegresarBusquedaCompensacion()"><i class="ic-arrow-back"></i></div>
+			<sa-big-breadcrumbs [items]="['Compensaci&oacute;n']" icon="group"></sa-big-breadcrumbs>
+		</div>
+
+			<div class="col-lg-12">
+
+				<div class="well well-sm well-light">
+
+					<div class="padding-10">
+
+								<div>
+									<fieldset>
+										<legend>Datos</legend>
+
+										<div class="smart-form">
+
+
+											<div class="row">
+												<section class="col col-md-3">
+													<label>Mes</label>
+													<label class="input state-disabled">
+														<input type="text" [(ngModel)]="compensacion.mes" disabled="disabled"/>
+													</label>
+												</section>
+
+												<section class="col col-md-3">
+													<label>Vacaciones</label>
+													<label class="input state-disabled">
+														<input type="text" [(ngModel)]="compensacion.vacaciones" disabled="disabled"/>
+													</label>
+												</section>
+
+												<section class="col col-md-3">
+													<label>Licencias</label>
+													<label class="input state-disabled">
+														<input type="text" [(ngModel)]="compensacion.licencias" disabled="disabled"/>
+													</label>
+												</section>
+
+												<section class="col col-md-3">
+													<label>Inasistencias</label>
+													<label class="input state-disabled">
+														<input type="text" [(ngModel)]="compensacion.inasistencias" disabled="disabled"/>
+													</label>
+												</section>
+											</div>
+
+											<div class="row">
+												<section class="col col-md-3">
+													<label>Horas Trabajadas</label>
+													<label class="input state-disabled">
+														<input type="text" [(ngModel)]="compensacion.horasTrabajadas" disabled="disabled"/>
+													</label>
+												</section>
+
+												<section class="col col-md-3">
+													<label>Horas Tardanza Ingreso</label>
+													<label class="input state-disabled">
+														<input type="text" [(ngModel)]="compensacion.horasTardanzaIngreso" disabled="disabled"/>
+													</label>
+												</section>
+
+												<section class="col col-md-3">
+													<label>Horas Tardanza Salida</label>
+													<label class="input state-disabled">
+														<input type="text" [(ngModel)]="compensacion.horasTardanzaSalida" disabled="disabled"/>
+													</label>
+												</section>
+
+												<section class="col col-md-3">
+													<label>Horas Tardanza Almuerzo</label>
+													<label class="input state-disabled">
+														<input type="text" [(ngModel)]="compensacion.horasDemoraAlmuerzo" disabled="disabled"/>
+													</label>
+												</section>
+
+
+											</div>
+
+											<div class="row">
+
+												<section class="col col-md-3">
+													<label>Horas Horario</label>
+													<label class="input state-disabled">
+														<input type="text" [(ngModel)]="compensacion.horarioHorasTrabajo" disabled="disabled"/>
+													</label>
+												</section>
+
+												<section class="col col-md-3">
+													<label>Horas Adicionales</label>
+													<label class="input state-disabled">
+														<input type="text" [(ngModel)]="compensacion.horasAdicionales" disabled="disabled"/>
+													</label>
+												</section>
+
+												<section class="col col-md-3">
+													<label>Horas Compensadas</label>
+													<label class="input state-disabled">
+														<input type="text" [(ngModel)]="compensacion.horasCompensadas" disabled="disabled"/>
+													</label>
+												</section>
+
+
+												<section class="col col-md-3">
+													<label>Horas Pendientes</label>
+													<label class="input state-disabled">
+														<input type="text" [(ngModel)]="compensacion.horasPendientesTotal" disabled="disabled"/>
+													</label>
+												</section>
+											</div>
+
+
+										</div>
+									</fieldset>
+
+								</div>
+
+							</div>
+
+							<div class="padding-10" style="padding-top:20px!important">
+
+								<div>
+
+									<legend>Permisos - Compensaciones de Horas</legend>
+									<div class="widget-body">
+										<fieldset>
+
+											<kendo-grid
+													[data]="gridView"
+													[pageSize]="pageSize"
+													[skip]="skip"
+													[pageable]="true"
+													(pageChange)="pageChangePermisos($event)"
+											>
+
+												<kendo-grid-column field="fecha" title="Fecha" [width]="150"></kendo-grid-column>
+												<kendo-grid-column field="horaInicio" title="Desde" [width]="100"></kendo-grid-column>
+												<kendo-grid-column field="horaFin" title="Hasta" [width]="100"></kendo-grid-column>
+												<kendo-grid-column field="horas" title="Horas" [width]="100"></kendo-grid-column>
+												<kendo-grid-column field="jefeInmediato" title="Jefe Inmediato" [width]="100"></kendo-grid-column>
+											</kendo-grid>
+
+
+										</fieldset>
+									</div>
+
+								</div>
+							</div>
+
+								<div class="padding-10"  style="padding-top:20px!important">
+
+									<div>
+
+										<legend>Recuperacion de Horas</legend>
+										<div class="widget-body">
+											<fieldset>
+												<kendo-grid
+														[data]="gridViewHorasExtras"
+														[pageSize]="pageSizeHorasExtras"
+														[skip]="skipHorasExtras"
+														[pageable]="true"
+														(pageChange)="pageChangeHorasExtras($event)"
+												>
+
+													<kendo-grid-column field="fecha" title="Fecha" [width]="150"></kendo-grid-column>
+													<kendo-grid-column field="horaSalidaHorario" title="Desde" [width]="100"></kendo-grid-column>
+													<kendo-grid-column field="horaSalidaSolicitado" title="Hasta" [width]="100"></kendo-grid-column>
+													<kendo-grid-column field="horas" title="Horas" [width]="100"></kendo-grid-column>
+													<kendo-grid-column field="jefeInmediato" title="Jefe Inmediato" [width]="100"></kendo-grid-column>
+												</kendo-grid>
+											</fieldset>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+
+			</div>
+		</div>
+
+</div>

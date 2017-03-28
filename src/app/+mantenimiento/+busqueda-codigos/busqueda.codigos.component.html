@@ -1,0 +1,123 @@
+<div id="content" class="search-view">
+
+    <div class="row">
+        <div class="page-header">
+            <sa-big-breadcrumbs [items]="['Consulta de Codigos']" icon="group"></sa-big-breadcrumbs>
+        </div>
+    </div>
+
+    <!-- widget grid -->
+    <sa-widgets-grid>
+
+        <!-- START ROW -->
+        <div class="row">
+
+            <!-- NEW COL START -->
+            <article class="col-sm-12 col-md-12 col-lg-12">
+                <div class="smart-form" >
+                    <kendo-tabstrip>
+                        <kendo-tabstrip-tab [title]="'B&uacute;squeda'" [selected]="true">
+                            <template kendoTabContent>
+
+                            <div class="row">
+                                        <section class="col col-4">
+                                            <label>Tipo Notificacion</label>
+                                            <label class="input">
+                                                <kendo-dropdownlist
+                                                        [data]="grupoTablaGeneral"
+                                                        [defaultItem]="defaultItemGrupo"
+                                                        [textField]="'grupo'"
+                                                        [valueField]="'grupo'"
+                                                        style="width: 100%;"
+                                                        [(ngModel)]="grupoTablaGeneralSelect.grupo"
+                                                        [valuePrimitive]="true"
+                                                        [value]="grupoTablaGeneralSelect.grupo"
+                                                >
+
+                                                </kendo-dropdownlist>
+                                            </label>
+                                        </section>
+                                        <section class="col col-8">
+                                            <label>Nombre</label>
+                                            <label class="input">
+                                                <input type="text" name="nombre" [(ngModel)]="busquedaTablaGeneral.nombre">
+                                            </label>
+                                        </section>
+
+                               </div>
+                                <div class="search-bar">
+                                    <button type="button" class="btn btn-lg btn-default" (click)="onLimpiar()">
+                                        Limpiar
+                                    </button>
+                                    <button type="submit" class="btn btn-lg btn-primary" (click)="onSubmit()">Buscar
+                                    </button>
+                                </div>
+                            </template>
+                        </kendo-tabstrip-tab>
+                    </kendo-tabstrip>
+                </div> <!-- end form -->
+            </article>
+            <!-- END COL -->
+        </div>
+        <!-- END ROW -->
+    </sa-widgets-grid>
+
+    <!-- START 2DO - widget grid -->
+    <sa-widgets-grid>
+
+        <!-- START ROW -->
+        <div class="row">
+
+
+            <!-- NEW COL START -->
+            <article class="col-sm-12">
+
+                <sa-widget [colorbutton]="false" [editbutton]="false" [fullscreenbutton]="false" [custombutton]="false"
+                           [sortable]="false" [deletebutton]="false" [togglebutton]="false" >
+
+                    <header>
+
+                        <h2>Resultados {{tablaGeneralResultViewModel.length}}</h2>
+
+                    </header>
+                    <div class="widget-body">
+                        <fieldset>
+                            <div [ngBusy]="{busy: busy, minDuration:1000}"></div>
+
+                            <kendo-grid
+                                    [data]="gridView"
+                                    [pageSize]="pageSize"
+                                    [skip]="skip"
+                                    [pageable]="true"
+                                    (pageChange)="pageChange($event)"
+                            >
+                                <kendo-grid-column field="idEdit" title=" " [width]="40" *ngIf="!isAuthorized('Eliminar')">
+                                    <template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-center">
+                                            <a href="javascript:void(0)" class="link" (click)="onEdit(dataItem)">
+                                                <span class="fa fa-pencil"></span></a>
+                                        </div>
+                                    </template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="grupo" title="Grupo" [width]="250"></kendo-grid-column>
+                                <kendo-grid-column field="codigo" title="Codigo" [width]="100"></kendo-grid-column>
+                                <kendo-grid-column field="nombre" title="Nombre" [width]="350"></kendo-grid-column>
+                                <kendo-grid-column field="estado" title="Estado" [width]="100"></kendo-grid-column>
+                            </kendo-grid>
+
+
+                        </fieldset>
+                    </div>
+                </sa-widget>
+
+            </article>
+            <!-- END COL -->
+
+        </div>
+
+
+
+    </sa-widgets-grid>
+
+
+</div>

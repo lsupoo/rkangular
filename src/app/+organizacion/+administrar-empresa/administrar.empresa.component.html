@@ -1,0 +1,172 @@
+<div id="content">
+
+	<simple-notifications [options]="options"  style="z-index: 5000" ></simple-notifications>
+
+	<div class="row">
+
+		<div class="page-header">
+			<div class="btn-back" (click)="onRegresarBusquedaEmpresa()"><i class="ic-arrow-back"></i></div>
+			<sa-big-breadcrumbs [items]="['Empresa ']" icon="group"></sa-big-breadcrumbs>
+		</div>
+
+			<div class="col-lg-12">
+
+							<div class="well well-sm well-light">
+
+								<div class="padding-10">
+
+								<div>
+									<fieldset>
+										<legend>Datos</legend>
+
+										<div class="smart-form">
+
+											<div class="row">
+
+												<section class="col col-md-4">
+													<label>Gerente General</label>
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-search"></i>
+                                                        <ng2-completer [(ngModel)]="empresa.jefe" [dataService]="dataServiceJefe" [minSearchLength]="0" (selected)="selectJefe($event)"></ng2-completer>
+                                                    </label>
+												</section>
+
+                                                <section class="col col-md-4">
+                                                    <label>Jefe No Disponible</label>
+                                                    <label class="select">
+                                                        <input type="checkbox"/>
+                                                    </label>
+                                                </section>
+
+                                                <section class="col col-md-4">
+                                                    <label>Gerente Reemplazo</label>
+                                                    <label class="input">
+                                                        <i class="icon-append fa fa-search"></i>
+                                                        <ng2-completer [(ngModel)]="empresa.jefeReemplazo" [dataService]="dataServiceJefeReemplazo" [minSearchLength]="0" (selected)="selectJefeReemplazo($event)"></ng2-completer>
+                                                    </label>
+                                                </section>
+
+											</div>
+
+											<div class="row">
+												<section class="col col-md-4">
+													<label>Codigo Empresa</label>
+                                                    <label class="input">
+                                                        <input type="text" [(ngModel)]="empresa.codigo"/>
+                                                    </label>
+												</section>
+
+                                                <section class="col col-md-4">
+                                                    <label>Razon Social</label>
+                                                    <label class="input">
+                                                        <input type="text" [(ngModel)]="empresa.razonSocial"/>
+                                                    </label>
+                                                </section>
+
+                                                <section class="col col-md-4">
+                                                    <label>Ruc</label>
+                                                    <label class="input">
+                                                        <input type="text" [(ngModel)]="empresa.ruc"/>
+                                                    </label>
+                                                </section>
+
+
+
+
+
+											</div>
+
+											<div class="row">
+
+												<section class="col col-4">
+													<label>Estado</label>
+													<label class="input">
+														<kendo-dropdownlist
+																[data]="estados"
+																[defaultItem]="defaultItemEstado"
+																[textField]="'nombre'"
+																[valueField]="'codigo'"
+																style="width: 100%;"
+																[valuePrimitive]="true"
+																[(ngModel)]="empresa.estado"
+																[value]="empresa.estado"
+														>
+														</kendo-dropdownlist>
+													</label>
+												</section>
+
+											</div>
+										</div>
+									</fieldset>
+
+								</div>
+
+							</div>
+
+							<div class="padding-10">
+
+								<div>
+
+									<legend>Unidad de Negocio</legend>
+									<div class="widget-body">
+										<fieldset>
+											<div class="col-12 text-right padding-bottom-10">
+												<button (click)="agregarUnidadNegocio()" class="btn btn-default"> Agregar
+												</button>
+											</div>
+										</fieldset>
+										<fieldset>
+											<kendo-grid
+													[data]="gridViewUndNegocio"
+													[pageSize]="pageSizeUnidadNegocio"
+													[skip]="skipUnidadNegocio"
+													[pageable]="true"
+													[sort]="sort"
+													(dataStateChange)="pageChangeUndDeNegocio($event)">
+
+												<kendo-grid-column field="idUnidadDeNegocio" title=" " width="40px">
+													<template kendoGridCellTemplate let-dataItemUnidadNegocio>
+														<div class="text-center">
+															<a href="javascript:void(0)" class="link" (click)="onEditarUnidadNegocio(dataItemUnidadNegocio)">
+																<span class="fa fa-pencil"></span></a>
+														</div>
+
+													</template>
+												</kendo-grid-column>
+												<kendo-grid-column field="idUnidadDeNegocio" title=" " width="40px" >
+													<template kendoGridCellTemplate let-dataItemUnidadNegocio>
+														<div class="text-center">
+															<a href="javascript:void(0)" class="link" (click)="(null)">
+																<span class="fa fa-trash"></span></a>
+														</div>
+
+													</template>
+												</kendo-grid-column>
+												<kendo-grid-column field="nombre" title="Nombre"></kendo-grid-column>
+												<kendo-grid-column field="jefe" title="Jefe"></kendo-grid-column>
+												<kendo-grid-column field="jefeReemplazo" title="Jefe Reemplazo"></kendo-grid-column>
+												<kendo-grid-column field="nombreEstado" title="Estado"></kendo-grid-column>
+												<div *kendoGridDetailTemplate="let dataItemUnidadNegocio">
+													<departamento-area-detail [departamentosAreaDetail]="dataItemUnidadNegocio.departamentosArea" ></departamento-area-detail>
+												</div>
+											</kendo-grid>
+											<unidadNegocio-dialog-form [model]="dataItemUnidadNegocio" (cancel)="onCancelarUnidadNegocio()" (save)="onGuardarUnidadNegocio($event)"></unidadNegocio-dialog-form>
+										</fieldset>
+									</div>
+
+								</div>
+							</div>
+
+								<div class="padding-10">
+									<div class="bottom-bar">
+										<button (click)="onRegistrarEmpresa()" class="btn btn-primary"> Guardar</button>
+									</div>
+
+								</div>
+
+
+				</div>
+
+			</div>
+		</div>
+</div>
