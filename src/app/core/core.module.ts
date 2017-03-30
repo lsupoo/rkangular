@@ -11,7 +11,7 @@ import {SoundService} from "../shared/sound/sound.service";
 
 import { throwIfAlreadyLoaded } from './guards/module-import-guard';
 import {VoiceRecognitionService} from "../shared/voice-control/voice-recognition.service";
-import {TabsModule, ProgressbarModule, TooltipModule, DropdownModule, AlertModule} from "ng2-bootstrap";
+import {TabsModule, ProgressbarModule, TooltipModule, BsDropdownModule , AlertModule} from "ng2-bootstrap";
 
 @NgModule({
   imports: [
@@ -19,7 +19,7 @@ import {TabsModule, ProgressbarModule, TooltipModule, DropdownModule, AlertModul
 
 
     TooltipModule.forRoot(),
-    DropdownModule.forRoot(),
+    BsDropdownModule.forRoot(),
     ProgressbarModule.forRoot(),
     AlertModule.forRoot(),
     TabsModule.forRoot(),

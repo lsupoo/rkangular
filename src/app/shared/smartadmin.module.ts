@@ -7,7 +7,7 @@ import {
     ModalModule,
     ButtonsModule,
     TooltipModule,
-    DropdownModule,
+    BsDropdownModule,
     ProgressbarModule,
     AlertModule,
     TabsModule
@@ -38,7 +38,7 @@ import {ConfirmModule} from "./confirm/confirm.module";
         AlertModule,
         TabsModule,
         TooltipModule,
-        DropdownModule,
+        BsDropdownModule,
         ProgressbarModule,
         PopoverModule,
         SmartadminLayoutModule,

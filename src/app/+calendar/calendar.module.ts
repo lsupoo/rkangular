@@ -9,13 +9,13 @@ import {ExternalEventsComponent} from "./external-events/external-events.compone
 import {CalendarComponent} from "./calendar.component";
 import {SmartadminModule} from "../shared/smartadmin.module";
 import {routing} from "./calendar.routing";
-import {DropdownModule} from "ng2-bootstrap";
+import {BsDropdownModule } from "ng2-bootstrap";
 
 @NgModule({
   imports: [
     SmartadminModule,
     routing,
-    DropdownModule,
+    BsDropdownModule ,
   ],
 
   declarations: [

@@ -15,7 +15,7 @@ import {SpeechButtonComponent} from "./speech-button/speech-button.component";
 import {I18nModule} from "../../i18n/i18n.module";
 import {UserModule} from "../../user/user.module";
 import {VoiceControlModule} from "../../voice-control/voice-control.module";
-import {DropdownModule} from "ng2-bootstrap";
+import {BsDropdownModule} from "ng2-bootstrap";
 import {SmartadminModule} from "../../shared/smartadmin.module";
 import {SmartadminInputModule} from "../../shared/forms/input/smartadmin-input.module";
 import {EmpleadoComponent} from "./empleado.component";
@@ -39,7 +39,7 @@ import {PushNotificationsModule} from "angular2-notifications";
         FormsModule,
         PushNotificationsModule,
         VoiceControlModule,
-        DropdownModule,
+        BsDropdownModule,
 
         UtilsModule, I18nModule, UserModule, PopoverModule, GrowlModule
     ],
