@@ -58,6 +58,7 @@ export class AuthenticationService {
             .map((response: any) => {
                 // login successful if there's a jwt token in the response
 
+                debugger;
 
                 let token = response.token;
                 if (token) {

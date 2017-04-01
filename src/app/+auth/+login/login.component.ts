@@ -6,7 +6,6 @@ import {Observable} from "rxjs";
 import {StorageService} from "../../+common/storageLocalValues/storage.service";
 import {AuthenticationService} from "../+services/authentication.service";
 import {CurrentUser} from "../../+dto/currentUser";
-import {StorageResult} from "../../+dto/storageResult";
 import {Response} from "@angular/http";
 import {EmpleadoService} from "../../+common/service/empleado.service";
 import {AssignedRole} from "../../+dto/assignedRole";
@@ -68,6 +67,7 @@ export class LoginComponent implements OnInit {
 
     login() {
 
+        debugger;
         this.loading = true;
 
         const getPostOne$= Observable.timer(1000).mapTo(
@@ -88,7 +88,6 @@ export class LoginComponent implements OnInit {
                     error => {
                         debugger;
                         this.error = error.json().message;;
-                        //var x=error.json().message;
                         this.handleError(error);
                         this.loading = false;
                     })
