@@ -1,0 +1,66 @@
+<header id="header">
+  <div id="logo-group">
+
+    <!-- PLACE YOUR LOGO HERE -->
+    <span id="logo"> <img src="assets/img/runakuna-logo-v1.png" alt="Runakuna"> </span>
+    <!-- END LOGO PLACEHOLDER -->
+
+    <!-- Note: The activity badge color changes when clicked and resets the number to 0
+    Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->
+    <sa-activities></sa-activities>
+  </div>
+
+
+
+  <p-growl [value]="msgs"></p-growl>
+
+  <sa-recent-projects></sa-recent-projects>
+
+
+  <!-- pulled right: nav area -->
+  <div class="pull-right">
+    <!--    <sa-collapse-menu></sa-collapse-menu>-->
+
+    <!-- #MOBILE -->
+    <!-- Top menu profile link : this shows only when top menu is active -->
+    <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+      <li class="">
+        <a (click)="subirImagen()" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown" style="color: #fff;">
+          <span title="{{rolesAsignados}}">{{nombreCompleto}}</span>
+
+          <img [src]="fotoUsuario" class="online">
+          
+        </a>
+        <foto-header-form [model]="dataItemFoto" (cancel)="onCancelarImagen()" (save)="onAceptarImagen($event)"></foto-header-form>
+      </li>
+
+    </ul>
+
+    <!-- logout button -->
+    <sa-logout></sa-logout>
+    <!-- end logout button -->
+  </div>
+  <div class="pull-right">
+    <ul id="roleDefault" class="header-dropdown-list hidden-xs padding-5">
+    <li style="list-style-type: none;
+                 text-decoration: none;
+                 list-style: outside none none;
+                 text-decoration-line: none;">
+      <a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown" style="color: #fff;">
+        <span>{{roleDefaultName}}</span>
+        <i class="fa fa-angle-down"></i>
+      </a>
+      <ul class="dropdown-menu pull-right">
+
+        <li *ngFor="let nameRolUser of rolAsignado">
+          <a *ngIf="nameRolUser.assigned == true" (click)="refreshModule(nameRolUser)">{{nameRolUser.roleDescription | i18n}}</a>
+        </li>
+
+
+      </ul>
+    </li>
+    </ul>
+  </div>
+  <!-- end pulled right: nav area -->
+
+</header>

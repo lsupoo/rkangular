@@ -1,0 +1,117 @@
+<div id="content">
+    <div class="row">
+
+        <div class="page-header">
+            <div class="btn-back" (click)="onRegresarBusquedaCentrosCostos()"><i class="ic-arrow-back"></i></div>
+            <sa-big-breadcrumbs [items]="['Centro de Costo ']" icon="group"></sa-big-breadcrumbs>
+        </div>
+
+        <p-growl [value]="msgs"></p-growl>
+
+            <div class="col-lg-12">
+
+                            <div class="well well-sm well-light">
+
+                                <div class="padding-10">
+
+                                    <div>
+                                        <fieldset>
+                                            <legend>Datos</legend>
+
+                                            <div class="smart-form">
+
+                                                <div class="row">
+
+                                                    <section class="col col-3">
+                                                        <label>Unidad de negocio</label>
+                                                        <label class="input" >
+                                                            <kendo-dropdownlist
+                                                                    [data]="undnegocios"
+                                                                    [textField]="'nombre'"
+                                                                    [valueField]="'idUnidadDeNegocio'"
+                                                                    [(ngModel)]="unidadNegocioSelect"
+                                                                    [defaultItem]="defaultItem"
+                                                                    (selectionChange)="actualizarDpto($event)"
+                                                                    [value] = "unidadNegocioSelect"
+                                                                    style="width: 100%;"
+                                                                    [disabled]="!isAuthorized('Editar')">
+                                                            </kendo-dropdownlist>
+                                                        </label>
+                                                    </section>
+
+                                                    <section class="col col-3">
+                                                        <label>Departamento</label>
+                                                        <label class="input">
+                                                            <kendo-dropdownlist
+                                                                    [data]="departamentos"
+                                                                    [textField]="'nombre'"
+                                                                    [valueField]="'idDepartamentoArea'"
+                                                                    [(ngModel)]="departamentoSelect"
+                                                                    [defaultItem]="defaultItemDepartamento"
+                                                                    (selectionChange)="changeDpto($event)"
+                                                                    [value] = "departamentoSelect"
+                                                                    style="width: 100%;"
+                                                                    [disabled]="!isAuthorized('Editar')">
+                                                            </kendo-dropdownlist>
+                                                        </label>
+                                                    </section>
+
+                                                </div>
+
+                                                <div class="row">
+
+                                                    <section class="col col-md-3">
+                                                        <label>Nombre</label>
+                                                        <label [ngClass]="getEditableClass('Editar')">
+                                                            <input type="text" [(ngModel)]="centroCosto.nombre" [disabled]="!isAuthorized('Editar')" />
+                                                        </label>
+
+                                                    </section>
+                                                    <section class="col col-md-2">
+                                                        <label>Estado<span style="color: red">*</span></label>
+                                                        <div>
+                                                            <label class="input">
+                                                                <kendo-dropdownlist id="estados"
+                                                                                    [data]="estados"
+                                                                                    [textField]="'nombre'"
+                                                                                    [valuePrimitive] = "true"
+                                                                                    [defaultItem]="defaultItemEstados"
+                                                                                    [valueField]="'codigo'" style="width: 100%;"
+                                                                                    [(value)]="centroCosto.estado"
+                                                                                    (selectionChange)="changeEstado($event)"
+                                                                                    [disabled]="!isAuthorized('Editar')">
+
+                                                                </kendo-dropdownlist>
+                                                            </label>
+                                                        </div>
+                                                    </section>
+
+                                                </div>
+                                                <div class="row">
+                                                    <section class="col col-md-12">
+                                                        <label>Descripcion</label>
+                                                        <label [ngClass]="getEditableClass('Editar')">
+                                                            <textarea [(ngModel)]="centroCosto.descripcion" [disabled]="!isAuthorized('Editar')"></textarea>
+                                                        </label>
+
+                                                    </section>
+                                                </div>
+
+                                            </div>
+                                        </fieldset>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="padding-10">
+                                    <div class="bottom-bar">
+                                        <button (click)="onGuardarCentroCosto()" class="btn btn-primary"> Guardar</button>
+                                    </div>
+
+                                </div>
+                            </div>
+            </div>
+        </div>
+
+</div>

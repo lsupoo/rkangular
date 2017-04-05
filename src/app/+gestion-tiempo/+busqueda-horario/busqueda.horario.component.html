@@ -1,0 +1,222 @@
+<div id="content" class="search-view">
+
+    <p-growl [value]="msgs"></p-growl>
+
+    <div class="row">
+        <div class="page-header">
+            <sa-big-breadcrumbs [items]="['Consulta de Horarios']" icon="group"></sa-big-breadcrumbs>
+        </div>
+    </div>
+
+    <sa-widgets-grid>
+
+        <div class="row">
+
+            <article class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="smart-form">
+                                <kendo-tabstrip>
+                                    <kendo-tabstrip-tab [title]="'B&uacute;squeda'" [selected]="true">
+                                        <template kendoTabContent>
+
+                                            <div class="row">
+
+                                                <section class="col col-4">
+                                                    <label>Tipo de horario</label>
+                                                    <label class="input">
+                                                        <kendo-dropdownlist
+                                                                [data]="tiposhorario"
+                                                                [textField]="'nombre'"
+                                                                [valueField]="'codigo'"
+                                                                [defaultItem]="defaultItemTablaGeneral"
+                                                                style="width: 100%;"
+                                                                [(ngModel)]="tipoHorarioSelect"
+                                                                [value]="tipoHorarioSelect"
+                                                        >
+                                                        </kendo-dropdownlist>
+                                                    </label>
+                                                </section>
+
+
+                                                <section class="col col-4">
+                                                    <label>Proyecto</label>
+                                                    <label class="input">
+                                                        <kendo-dropdownlist
+                                                                [data]="proyecto"
+                                                                [textField]="'nombre'"
+                                                                [valueField]="'idProyecto'"
+                                                                [defaultItem]="defaultItemProyecto"
+                                                                [(ngModel)]="proyectoSelect"
+                                                                [value]="proyectoSelect"
+                                                                style="width: 100%;"
+
+                                                        >
+                                                        </kendo-dropdownlist>
+                                                    </label>
+                                                </section>
+
+                                            </div>
+
+                                            <div class="row">
+
+                                                <section class="col col-4">
+                                                    <label>Estado</label>
+                                                    <label class="input">
+                                                        <kendo-dropdownlist
+                                                                [data]="estados"
+                                                                [defaultItem]="defaultItemTablaGeneral"
+                                                                [textField]="'nombre'"
+                                                                [valueField]="'codigo'"
+                                                                style="width: 100%;"
+                                                                [(ngModel)]="estadosSelect"
+                                                                [value]="estadosSelect">
+
+                                                        </kendo-dropdownlist>
+
+                                                    </label>
+                                                </section>
+
+                                                <section class="col col-4">
+                                                    <label>Por defecto</label>
+                                                    <label class="select">
+                                                        <kendo-dropdownlist
+                                                                [data]="porDefecto"
+                                                                [defaultItem]="defaultItemPorDefecto"
+                                                                [textField]="'nombre'"
+                                                                [valueField]="'defecto'"
+                                                                style="width: 100%;"
+                                                                [(ngModel)]="porDefectoSelect"
+                                                                [value]="porDefectoSelect">
+
+                                                        </kendo-dropdownlist>
+                                                    </label>
+
+                                                </section>
+                                            </div>
+
+                                            <div class="search-bar">
+                                                <button type="button" class="btn btn-lg btn-default" (click)="onLimpiar()">
+                                                    Limpiar
+                                                </button>
+                                                <button type="submit" class="btn btn-lg btn-primary"
+                                                        (click)="onSubmit()">Buscar
+                                                </button>
+                                            </div>
+
+
+                                        </template>
+                                    </kendo-tabstrip-tab>
+                                </kendo-tabstrip>
+                            </div>
+
+            </article>
+
+        </div>
+
+        <!-- END ROW -->
+
+    </sa-widgets-grid>
+
+    <!-- widget grid -->
+    <sa-widgets-grid>
+
+        <!-- START ROW -->
+        <div class="row">
+
+            <alert *ngIf="noItems" type="info" dismissible="true">
+                <i class="fa-fw fa fa-info"></i>
+                <strong>Info!</strong> No hay información para exportar.
+            </alert>
+
+            <!-- NEW COL START -->
+            <article class="col-sm-12">
+
+                <sa-widget [colorbutton]="false" [editbutton]="false" [fullscreenbutton]="false" [custombutton]="false"
+                           [sortable]="false" [deletebutton]="false">
+
+                    <header>
+
+
+                        <h2>Resultados {{horarios.length}}</h2>
+
+                    </header>
+                    <div class="widget-body">
+
+                        <fieldset>
+                            <div class="col-12 text-right padding-bottom-10">
+
+                                <button (click)="onNew()" class="btn btn-default" *ngIf="isAuthorized('Agregar')">Agregar
+                                </button>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+
+                            <div [ngBusy]="{busy: busy, minDuration:1000}"></div>
+                            <kendo-grid
+                                    [data]="gridView"
+                                    [pageSize]="pageSize"
+                                    [skip]="skip"
+                                    [pageable]="true"
+                                    (pageChange)="pageChangeMarcaciones($event)"
+                            >
+
+
+                                <kendo-grid-column field="idHorario" title=" " [width]="40"
+                                                   *ngIf="isAuthorized('Editar')">
+                                    <template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-center">
+                                            <a href="javascript:void(0)" class="link" (click)="onEdit(dataItem)">
+                                                <span class="fa fa-pencil"></span></a>
+                                        </div>
+                                    </template>
+                                </kendo-grid-column>
+
+                                <kendo-grid-column field="idHorario" title=" " [width]="40"
+                                                   *ngIf="!isAuthorized('Editar')">
+                                    <template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-center">
+                                            <a href="javascript:void(0)" class="link" (click)="onEdit(dataItem)">
+                                                <span class="fa fa-eye"></span></a>
+                                        </div>
+                                    </template>
+                                </kendo-grid-column>
+
+                                <kendo-grid-column field="idHorario" title=" " [width]="40"
+                                                   *ngIf="isAuthorized('Eliminar')">
+                                    <template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-center">
+                                            <a href="javascript:void(0)" class="link" (click)="confirm(dataItem)">
+                                                <span class="fa fa-trash"></span></a>
+                                        </div>
+                                    </template>
+                                </kendo-grid-column>
+
+                                <kendo-grid-column field="nombreTipoHorario" title="Tipo horario"
+                                                   [width]="200"></kendo-grid-column>
+                                <kendo-grid-column field="nombreProyecto" title="Proyecto"
+                                                   [width]="250"></kendo-grid-column>
+                                <kendo-grid-column field="nombre" title="Horario" [width]="250"></kendo-grid-column>
+                                <kendo-grid-column field="horasSemanal" title="Horas smanal"
+                                                   [width]="150"></kendo-grid-column>
+                                <kendo-grid-column field="diasSemana" title="Dias a la semana"
+                                                   [width]="100"></kendo-grid-column>
+                                <kendo-grid-column field="nombrePorDefecto" title="Por defecto"
+                                                   [width]="100"></kendo-grid-column>
+                                <kendo-grid-column field="nombreEstado" title="Estado"
+                                                   [width]="150"></kendo-grid-column>
+                            </kendo-grid>
+                            <confirm-dialog-form [model]="dataItem"
+                                                 (accept)="onEliminarHorario($event)"></confirm-dialog-form>
+
+                        </fieldset>
+                    </div>
+                </sa-widget>
+
+            </article>
+            <!-- END COL -->
+
+        </div>
+
+
+    </sa-widgets-grid>
+</div>

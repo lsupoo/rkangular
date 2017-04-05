@@ -1,0 +1,102 @@
+<div id="content">
+
+	<div class="row">
+
+		<div class="page-header">
+			<div class="btn-back" (click)="onRegresarBusquedaCalendario()"><i class="ic-arrow-back"></i></div>
+			<sa-big-breadcrumbs [items]="['Calendario ']" icon="group"></sa-big-breadcrumbs>
+		</div>
+
+		<p-growl [value]="msgs"></p-growl>
+
+			<div class="col-lg-12">
+
+							<div class="well well-sm well-light">
+
+								<div class="padding-10">
+
+									<div>
+										<fieldset>
+											<legend>Datos</legend>
+
+											<div class="smart-form">
+
+												<div class="row">
+													<section class="col col-md-3">
+														<label>Fecha<span style="color: red">*</span></label>
+														<label class="input">
+															<i class="icon-append fa fa-calendar"></i>
+															<input type="text" id="datepickerFecha"
+																   placeholder="Seleccionar una Fecha"
+																   [(ngModel)]="calendario.fecha"
+																   (change)="onChangeFecha($event)"
+																   [disabled]="!isAuthorized('Editar')"
+																   saUiDatepicker readonly/>
+														</label>
+													</section>
+												</div>
+												<div class="row">
+													<section class="col col-md-4">
+														<label>Nombre<span style="color: red">*</span></label>
+														<label class="input">
+															<input type="text" id="nombreCalendario" [(ngModel)]="calendario.nombre"
+																   (ngModelChange)="onChangeNombre()"
+																   [disabled]="!isAuthorized('Editar')"/>
+														</label>
+													</section>
+												</div>
+												<div class="row">
+													<section class="col col-md-4">
+														<label>Descripci&oacute;n</label>
+														<label class="input">
+															<input type="text" [(ngModel)]="calendario.descripcion" [disabled]="!isAuthorized('Editar')"/>
+														</label>
+													</section>
+												</div>
+												<div class="row">
+													<section class="col col-md-2">
+														<label>D&iacute;a Completo</label>
+														<label class="select">
+															<input type="checkbox" [(ngModel)]="calendario.diaCompleto" (change)="cambiarDiaCompleto($event)">
+														</label>
+													</section>
+												</div>
+												<div class="row" *ngIf="!isCheckedTodoDia">
+													<section class="col col-md-3">
+														<label>Hora Inicio(hh:mm)</label>
+														<label class="input">
+															<p-inputMask mask="99:99" [(ngModel)]="calendario.horaInicio"
+																		 (ngModelChange)="onChangeHoraInicio()" [disabled]="!isAuthorized('Editar')"
+																		 placeholder="00:00" id="horaInicio"></p-inputMask>
+														</label>
+													</section>
+													<section class="col col-md-3">
+														<label>Hora Fin(hh:mm)</label>
+														<label class="input">
+															<p-inputMask mask="99:99" [(ngModel)]="calendario.horaFin"
+																		 (ngModelChange)="onChangeHoraFin()" [disabled]="!isAuthorized('Editar')"
+																		 placeholder="00:00" id="horaFin"></p-inputMask>
+														</label>
+													</section>
+
+												</div>
+
+											</div>
+										</fieldset>
+
+									</div>
+
+								</div>
+
+								<div class="padding-10">
+									<div class="bottom-bar">
+										<button (click)="onGuardarFeriado()" class="btn btn-primary"> Guardar</button>
+									</div>
+
+								</div>
+							</div>
+
+			</div>
+		</div>
+
+</div>

@@ -1,0 +1,689 @@
+<div id="content">
+
+	<p-blockUI [blocked]="blockedUI"></p-blockUI>
+	<p-growl [value]="msgs"></p-growl>
+
+	<div class="row">
+		<div class="page-header">
+			<div class="btn-back" (click)="onRegresarBusquedaEmpleado()"><i class="ic-arrow-back"></i></div>
+			<sa-big-breadcrumbs [items]="['Empleado']" icon="group"></sa-big-breadcrumbs>
+		</div>
+	</div>
+
+	<div class="col-lg-12">
+		<div class="resume-panel">
+			<div>
+				<div class="resume-info" style="width: calc(100% - 150px);">
+					<div class="user-image">
+						<i class="ic-person" id="iconPerson"></i>
+						<img [src]="imagenEmpleado" style="display: none;" id="fotoEmpleado">
+					</div>
+					<div class="user-info">
+						<div>
+							<span>{{nombreCompletoEmpleado}}</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="resume-options" style="width: 200px;">
+					<div class="row text-right">
+						<div class="col-xs-12" *ngIf="isAuthorized('GestionarHorarios')">
+							<a (click)="onRegistrarEmpleado()" class="btn btn-default">{{tituloBotonEmpleado}}</a>
+						</div>
+
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+
+
+		<div class="content">
+
+			<div class="well well-sm well-light">
+
+			<ul ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+				<li class="active">
+					<a data-toggle="tab" href="#s1"><span class="nav nav-tabs">Informaci&oacute;n Personal</span></a>
+				</li>
+
+				<li>
+					<a data-toggle="tab" href="#s2"><span class="nav nav-tabs">Domicilio y Contacto</span></a>
+				</li>
+
+				<li>
+					<a data-toggle="tab" href="#s3"><span class="nav nav-tabs">Documentos</span></a>
+				</li>
+
+				<li>
+					<a data-toggle="tab" href="#s4"><span class="nav nav-tabs">Educacion</span></a>
+				</li>
+
+				<li>
+					<a data-toggle="tab" href="#s5"><span class="nav nav-tabs">Experiencia Laboral</span></a>
+				</li>
+
+				<li>
+					<a data-toggle="tab" href="#s6"><span class="nav nav-tabs">Equipos Entregados</span></a>
+				</li>
+			</ul>
+			<div class="tab-content">
+				<div id="s1" class="tab-pane fade in active">
+					<div class="padding-10">
+						<div>
+							<fieldset>
+								<legend>Datos Principales</legend>
+
+								<div class="col-md-4">
+									<section class="col col-md-12">
+										<div id="imgLogo1Subido" style="width: 100%; height: 275px; background-size: contain; background-repeat: no-repeat; background-position: 50% 50%; border: groove;">
+										</div>
+									</section>
+
+									<section class="col col-md-12 text-right">
+										<label class="input">
+											<div class="col-12" style="padding-top: 5px!important;">
+												<button (click)="subirImagen()" class="btn btn-default"> Subir Imagen<!--i class="fa fa-upload"></i-->
+												</button>
+											</div>
+										</label>
+									</section>
+									<foto-form [model]="dataItemFoto" (cancel)="onCancelarImagen()" (save)="onAceptarImagen($event)"></foto-form>
+								</div>
+
+								<div class="col-md-8">
+									<div class="smart-form">
+										<div class="row">
+											<section class="col col-md-6">
+												<label>Nombres<span style="color: red">*</span></label>
+												<label [ngClass]="getEditableClass('Editar')">
+													<input type="text" id="nombre" [(ngModel)]="empleado.nombre" (keyup)="ingresaNombre()" [disabled]="!isAuthorized('Editar')">
+												</label>
+											</section>
+										</div>
+
+										<div class="row">
+											<section class="col col-md-6">
+												<label>Apellido Paterno<span style="color: red">*</span></label>
+												<label [ngClass]="getEditableClass('Editar')">
+													<input type="text" id="apellidoPaterno" [(ngModel)]="empleado.apellidoPaterno" (keyup)="ingresaApellidoPaterno()" [disabled]="!isAuthorized('Editar')">
+												</label>
+											</section>
+
+											<section class="col col-md-6">
+												<label>Apellido Materno<span style="color: red">*</span></label>
+												<label [ngClass]="getEditableClass('Editar')">
+													<input type="text" id="apellidoMaterno" [(ngModel)]="empleado.apellidoMaterno" (keyup)="ingresaApellidoMaterno()" [disabled]="!isAuthorized('Editar')">
+												</label>
+											</section>
+										</div>
+
+										<div class="row">
+											<section class="col col-md-6">
+												<label>Tipo de Documento<span style="color: red">*</span></label>
+												<label class="input">
+													<kendo-dropdownlist id="tipoDocumento" [data]="tiposDocumento" [defaultItem]="defaultItem" [textField]="'nombre'" [valueField]="'codigo'" [(ngModel)]="empleado.tipoDocumento" [valuePrimitive]="true" style="width: 100%;" [disabled]="!isAuthorized('Editar')"></kendo-dropdownlist>
+												</label>
+											</section>
+
+											<section class="col col-md-6">
+												<label>Numero de Documento<span style="color: red">*</span></label>
+												<label [ngClass]="getEditableClass('Editar')">
+													<input type="text" id="numeroDocumento" [(ngModel)]="empleado.numeroDocumento" (keyup)="ingresaNumeroDocumento()" [disabled]="!isAuthorized('Editar')">
+												</label>
+											</section>
+										</div>
+
+										<div class="row">
+											<section class="col col-md-6">
+												<label>Genero<span style="color: red">*</span></label>
+												<label class="input">
+													<kendo-dropdownlist id="genero" [data]="generos" [defaultItem]="defaultItem" [textField]="'nombre'" [valueField]="'codigo'" [(ngModel)]="empleado.genero" [valuePrimitive]="true" style="width: 100%;" [disabled]="!isAuthorized('Editar')"></kendo-dropdownlist>
+												</label>
+											</section>
+
+											<section class="col col-md-6">
+												<label>Estado Civil<span style="color: red">*</span></label>
+												<label class="input">
+													<kendo-dropdownlist id="estadoCivil" [data]="estadosCivil" [defaultItem]="defaultItem" [textField]="'nombre'" [valueField]="'codigo'" [(ngModel)]="empleado.estadoCivil" [valuePrimitive]="true" style="width: 100%;" [disabled]="!isAuthorized('Editar')"></kendo-dropdownlist>
+												</label>
+											</section>
+										</div>
+
+										<div class="row">
+											<section class="col col-md-6">
+												<label>Grupo Sanguineo<span style="color: red">*</span></label>
+												<label class="input">
+													<kendo-dropdownlist id="grupoSanguineo" [data]="gruposSanguineo" [defaultItem]="defaultItem" [textField]="'nombre'" [valueField]="'codigo'" [(ngModel)]="empleado.grupoSangre" [valuePrimitive]="true" style="width: 100%;" [disabled]="!isAuthorized('Editar')"></kendo-dropdownlist>
+												</label>
+											</section>
+											<section class="col col-md-6">
+												<label>Discapacitado</label>
+												<label class="select">
+													<input type="checkbox" [(ngModel)]="empleado.discapacitado" [disabled]="!isAuthorized('Editar')">
+												</label>
+											</section>
+										</div>
+
+									</div>
+								</div>
+							</fieldset>
+
+							<fieldset>
+								<legend>Datos de Nacimiento</legend>
+								<div class="smart-form">
+									<div class="row">
+										<section class="col col-md-4">
+											<label>Fecha de Nacimiento<span style="color: red">*</span></label>
+											<label [ngClass]="getEditableClass('Editar')">
+												<i class="icon-append fa fa-calendar"></i>
+												<input type="text"
+													   id="fechaNacimiento"
+													   placeholder="Seleccionar una Fecha"
+													   [textMask]="{mask: dateTimeMask,guide:false}"
+													   [(ngModel)]="empleado.fechaNacimiento"
+													   (change)="onChangeDate($event)"
+													   (keyup)="keyUpLenghtInput($event)"
+													   (ngModelChange)="onModelChangeDatePickerInput($event,'fechaNacimiento')"
+													   [disabled]="!isAuthorized('Editar')"
+													   saUiDatepicker />
+
+												<!--my-date-picker [options]="myDatePickerOptions" (dateChanged)="changeMyDate($event)"></my-date-picker-->
+											</label>
+
+										</section>
+										<section class="col col-md-4">
+											<label>Pais<span style="color: red">*</span></label>
+											<label class="input">
+												<kendo-dropdownlist id="paisNacimiento" [data]="paises" [textField]="'nombre'" [valueField]="'codigo'" [defaultItem]="defaultItemPais" [(ngModel)]="empleado.paisNacimiento" [valuePrimitive]="true" style="width: 100%;" (selectionChange)="actualizarDpto($event)" [disabled]="!isAuthorized('Editar')"></kendo-dropdownlist>
+											</label>
+
+										</section>
+										<section class="col col-md-4">
+											<label>Departamento</label>
+											<label class="input">
+												<kendo-dropdownlist [data]="departamentos" [textField]="'nombre'" [valueField]="'codigo'" [defaultItem]="defaultItemDepartamento" [(ngModel)]="empleado.departamentoNacimiento" [valuePrimitive]="true" [value]="empleado.departamentoNacimiento" style="width: 100%;" (selectionChange)="actualizarProvincia($event)"></kendo-dropdownlist>
+											</label>
+										</section>
+									</div>
+
+									<div class="row">
+										<section class="col col-md-4">
+											<label>Edad</label>
+											<label class="input state-disabled">
+												<input type="text" name="edad" [ngModel]="empleado.edad" disabled="disabled"/>
+											</label>
+										</section>
+										<section class="col col-md-4">
+											<label>Provincia</label>
+											<label class="input">
+												<kendo-dropdownlist [data]="provincias" [textField]="'nombre'" [valueField]="'codigo'" [defaultItem]="defaultItemDepartamento" [(ngModel)]="empleado.provinciaNacimiento" [valuePrimitive]="true" [value]="empleado.provinciaNacimiento" style="width: 100%;" (selectionChange)="actualizarDistrito($event)"></kendo-dropdownlist>
+											</label>
+
+										</section>
+										<section class="col col-md-4">
+											<label>Distrito</label>
+											<label class="input">
+												<kendo-dropdownlist [data]="distritos" [textField]="'nombre'" [valueField]="'nombre'" [defaultItem]="defaultItemDepartamento" [(ngModel)]="empleado.distritoNacimiento" [valuePrimitive]="true" [value]="empleado.distritoNacimiento" style="width: 100%;"></kendo-dropdownlist>
+											</label>
+										</section>
+									</div>
+								</div>
+							</fieldset>
+
+							<fieldset>
+								<legend>Datos en la Empresa</legend>
+								<div class="smart-form">
+									<div class="row">
+										<section class="col col-md-4">
+											<label>Codigo<span style="color: red">*</span></label>
+											<label [class]="classCodigo" id="codigoLabel">
+												<input type="text" id="codigo" [(ngModel)]="empleado.codigo" (keyup)="ingresaCodigo()" [disabled]="isDisabledCodigo">
+											</label>
+										</section>
+
+										<section class="col col-md-4">
+											<label>Fecha Ingreso<span style="color: red">*</span></label>
+											<label [ngClass]="getEditableClass('Editar')">
+												<i class="icon-append fa fa-calendar"></i>
+												<input type="text" id="fechaIngreso" saUiDatepicker date-format="dd/MM/yy" placeholder="Seleccionar una Fecha" [(ngModel)]="empleado.fechaIngreso" (change)="onChangeDateIngreso($event)" [disabled]="!isAuthorized('Editar')"/>
+											</label>
+										</section>
+
+
+									</div>
+									<div class="row">
+
+										<section class="col col-md-8">
+											<label>Email Interno</label>
+											<label [ngClass]="getEditableClass('Editar')">
+												<input type="text" [(ngModel)]="empleado.emailInterno" [disabled]="!isAuthorized('Editar')">
+											</label>
+										</section>
+										<section class="col col-md-3">
+											<label>Telefono Interno</label>
+											<label [ngClass]="getEditableClass('Editar')">
+												<input type="text" [(ngModel)]="empleado.telefonoInterno" [disabled]="!isAuthorized('Editar')">
+											</label>
+										</section>
+										<section class="col col-md-1">
+											<label>Anexo</label>
+											<label [ngClass]="getEditableClass('Editar')">
+												<input type="text" [(ngModel)]="empleado.anexoInterno" [disabled]="!isAuthorized('Editar')">
+											</label>
+										</section>
+
+										<section class="col col-md-4">
+											<label>Centro de Costo</label>
+											<label class="select">
+												<kendo-dropdownlist [data]="centrosCosto" [textField]="'nombre'" [valueField]="'idCentroCosto'" [defaultItem]="defaultItemCentroCosto" [(ngModel)]="empleado.idCentroCosto" [valuePrimitive]="true" style="width: 100%;" [disabled]="!isAuthorized('Editar')"></kendo-dropdownlist>
+											</label>
+										</section>
+										<section class="col col-md-4">
+											<label>Contrato de Trabajo</label>
+											<label class="select">
+												<kendo-dropdownlist [data]="contratosTrabajo" [defaultItem]="defaultItem" [textField]="'nombre'" [valueField]="'codigo'" [(ngModel)]="empleado.contratoTrabajo" [valuePrimitive]="true" style="width: 100%;" [disabled]="!isAuthorized('Editar')"></kendo-dropdownlist>
+											</label>
+										</section>
+										<section class="col col-md-4">
+											<label>Tipo de Trabajador<span style="color: red">*</span></label>
+											<label class="select">
+												<kendo-dropdownlist id="tipoTrabajador" [data]="tiposTrabajo" [defaultItem]="defaultItem" [textField]="'nombre'" [valueField]="'codigo'" [(ngModel)]="empleado.tipoTrabajador" [valuePrimitive]="true" style="width: 100%;" [disabled]="!isAuthorized('Editar')"></kendo-dropdownlist>
+											</label>
+										</section>
+										<section class="col col-md-4">
+											<label>Regimen Horario</label>
+											<label class="select">
+												<kendo-dropdownlist [data]="regimenesHorario" [defaultItem]="defaultItem" [textField]="'nombre'" [valueField]="'codigo'" [(ngModel)]="empleado.regimenHorario" [valuePrimitive]="true" style="width: 100%;" [disabled]="!isAuthorized('Editar')"></kendo-dropdownlist>
+											</label>
+										</section>
+										<section class="col col-md-4">
+											<label>Regimen Laboral</label>
+											<label class="select">
+												<kendo-dropdownlist [data]="regimenesLaboral" [defaultItem]="defaultItem" [textField]="'nombre'" [valueField]="'codigo'" [(ngModel)]="empleado.regimenLaboral" [valuePrimitive]="true" style="width: 100%;" [disabled]="!isAuthorized('Editar')"></kendo-dropdownlist>
+											</label>
+										</section>
+										<section class="col col-md-4">
+											<label>Personal de Confianza</label>
+											<label class="select">
+												<input type="checkbox" [(ngModel)]="empleado.esPersonalDeConfianza" [disabled]="!isAuthorized('Editar')">
+											</label>
+										</section>
+									</div>
+
+									<div class="row">
+
+										<section class="col col-md-4">
+											<label>Entidad Bancario de Sueldo</label>
+											<label class="input">
+												<kendo-dropdownlist [data]="entidadesFinancieras" [textField]="'nombre'" [valueField]="'codigo'" [defaultItem]="defaultItem" [(ngModel)]="empleado.entidadBancariaSueldo" [valuePrimitive]="true" style="width: 100%;" [disabled]="!isAuthorized('Editar')"></kendo-dropdownlist>
+											</label>
+										</section>
+										<section class="col col-md-4">
+											<label>CTS</label>
+											<label class="input">
+												<kendo-dropdownlist [data]="entidadesFinancieras" [defaultItem]="defaultItem" [textField]="'nombre'" [valueField]="'codigo'" [(ngModel)]="empleado.cts" [valuePrimitive]="true" style="width: 100%;" [disabled]="!isAuthorized('Editar')"></kendo-dropdownlist>
+											</label>
+										</section>
+										<section class="col col-md-4">
+											<label>AFP</label>
+											<label class="input">
+												<kendo-dropdownlist [data]="afps" [defaultItem]="defaultItem" [textField]="'nombre'" [valueField]="'codigo'" [(ngModel)]="empleado.afp" [valuePrimitive]="true" style="width: 100%;" [disabled]="!isAuthorized('Editar')"></kendo-dropdownlist>
+											</label>
+										</section>
+									</div>
+
+									<div class="row">
+
+										<section class="col col-md-4">
+											<label>Tiene EPS?</label>
+											<label class="select">
+												<input type="checkbox" [(ngModel)]="empleado.tieneEps" [disabled]="!isAuthorized('Editar')" (change)="onChangeTieneEps($event)">
+											</label>
+										</section>
+										<section class="col col-md-4">
+											<label>EPS</label>
+											<label class="input">
+												<kendo-dropdownlist [data]="eps" [defaultItem]="defaultItem" [textField]="'nombre'" [valueField]="'codigo'" [(ngModel)]="empleado.eps" [valuePrimitive]="true" style="width: 100%;" [disabled]="!flagTieneEps"></kendo-dropdownlist>
+											</label>
+										</section>
+									</div>
+								</div>
+							</fieldset>
+
+						</div>
+					</div>
+				</div>
+				<div id="s2" class="tab-pane fade">
+					<div class="padding-10">
+						<div>
+							<fieldset>
+								<legend>Domicilio</legend>
+								<div class="smart-form">
+									<div class="row">
+										<section class="col col-md-8">
+											<label>Direccion<span style="color: red">*</span></label>
+											<label [ngClass]="getEditableClass('Editar')">
+												<input type="text" id="direccion" [(ngModel)]="empleado.direccionDomicilio" (keyup)="ingresaDireccion()" [disabled]="!isAuthorized('Editar')">
+											</label>
+										</section>
+
+										<section class="col col-md-4">
+											<label>Tipo Domicilio<span style="color: red">*</span></label>
+											<label class="input">
+												<kendo-dropdownlist id="tipoDomicilio" [data]="tiposDomicilio" [defaultItem]="defaultItem" [textField]="'nombre'" [valueField]="'codigo'" [(ngModel)]="empleado.tipoDomicilio" [valuePrimitive]="true" style="width: 100%;" [disabled]="!isAuthorized('Editar')"></kendo-dropdownlist>
+											</label>
+										</section>
+									</div>
+									<div class="row">
+										<section class="col col-md-4">
+											<label>Pais<span style="color: red">*</span></label>
+											<label class="input">
+												<kendo-dropdownlist id="paisDomicilio" [data]="paisesDomicilio" [textField]="'nombre'" [valueField]="'codigo'" [defaultItem]="defaultItemPais" [(ngModel)]="empleado.paisDomicilio" [valuePrimitive]="true" [value]="empleado.paisDomicilio" style="width: 100%;" (selectionChange)="actualizarDptoDomicilio($event)" ></kendo-dropdownlist>
+											</label>
+										</section>
+
+										<section class="col col-md-4">
+											<label>Departamento</label>
+											<label class="input">
+												<kendo-dropdownlist [data]="departamentosDomicilio" [textField]="'nombre'" [valueField]="'codigo'" [defaultItem]="defaultItemDepartamento" [(ngModel)]="empleado.departamentoDomicilio" [valuePrimitive]="true" [value]="empleado.departamentoDomicilio" style="width: 100%;" (selectionChange)="actualizarProvinciaDomicilio($event)"></kendo-dropdownlist>
+											</label>
+										</section>
+									</div>
+									<div class="row">
+										<section class="col col-md-4">
+											<label>Provincia</label>
+											<label class="input">
+												<kendo-dropdownlist [data]="provinciasDomicilio" [textField]="'nombre'" [valueField]="'codigo'" [defaultItem]="defaultItemDepartamento" [(ngModel)]="empleado.provinciaDomicilio" [valuePrimitive]="true" [value]="empleado.provinciaDomicilio" style="width: 100%;" (selectionChange)="actualizarDistritoDomicilio($event)"></kendo-dropdownlist>
+											</label>
+										</section>
+
+										<section class="col col-md-4">
+											<label>Distrito</label>
+											<label class="input">
+												<kendo-dropdownlist [data]="distritosDomicilio" [textField]="'nombre'" [valueField]="'nombre'" [defaultItem]="defaultItemDepartamento" [(ngModel)]="empleado.distritoDomicilio" [valuePrimitive]="true" [value]="empleado.distritoDomicilio" style="width: 100%;"></kendo-dropdownlist>
+											</label>
+										</section>
+
+									</div>
+								</div>
+							</fieldset>
+
+							<fieldset>
+								<legend>Telefonos</legend>
+								<div class="smart-form">
+									<div class="row">
+										<section class="col col-md-4">
+											<label>Casa</label>
+											<label [ngClass]="getEditableClass('Editar')">
+												<input type="text" [(ngModel)]="empleado.telefonoCasa" [disabled]="!isAuthorized('Editar')">
+											</label>
+										</section>
+										<section class="col col-md-4">
+											<label>Celular<span style="color: red">*</span></label>
+											<label [ngClass]="getEditableClass('Editar')">
+												<input type="text" id="celular" [(ngModel)]="empleado.telefonoCelular" (keyup)="ingresaCelular()" [disabled]="!isAuthorized('Editar')">
+											</label>
+										</section>
+										<section class="col col-md-4">
+											<label>Telefono Adicional</label>
+											<label [ngClass]="getEditableClass('Editar')">
+												<input type="text" [(ngModel)]="empleado.telefonoAdicional" [disabled]="!isAuthorized('Editar')">
+											</label>
+										</section>
+									</div>
+								</div>
+							</fieldset>
+
+							<fieldset>
+								<legend>Informacion Adicional</legend>
+								<div class="smart-form">
+									<div class="row">
+										<section class="col col-md-8">
+											<label>Correo Electronico</label>
+											<label [ngClass]="getEditableClass('Editar')">
+												<input type="text" [(ngModel)]="empleado.emailPersonal" [disabled]="!isAuthorized('Editar')">
+											</label>
+										</section>
+									</div>
+								</div>
+							</fieldset>
+
+							<fieldset>
+								<legend>Contacto de Emergencia</legend>
+								<div class="smart-form">
+									<div class="row">
+										<section class="col col-md-4">
+											<label>Relacion</label>
+											<label class="input">
+												<kendo-dropdownlist [data]="relacionesContacto" [textField]="'nombre'" [valueField]="'codigo'" [defaultItem]="defaultItem" [(ngModel)]="empleado.relacionContactoEmergencia" [valuePrimitive]="true" style="width: 100%;" [disabled]="!isAuthorized('Editar')"></kendo-dropdownlist>
+											</label>
+										</section>
+										<section class="col col-md-8">
+											<label>Nombre Completo</label>
+											<label [ngClass]="getEditableClass('Editar')">
+												<input type="text" [(ngModel)]="empleado.nombreContactoEmergencia" [disabled]="!isAuthorized('Editar')">
+											</label>
+										</section>
+									</div>
+									<div class="row">
+										<section class="col col-md-4">
+											<label>Telefono</label>
+											<label [ngClass]="getEditableClass('Editar')">
+												<input type="text" [(ngModel)]="empleado.telefonoContactoEmergencia" [disabled]="!isAuthorized('Editar')">
+											</label>
+										</section>
+
+										<section class="col col-md-8">
+											<label>Correo Electronico</label>
+											<label [ngClass]="getEditableClass('Editar')">
+												<input type="text" [(ngModel)]="empleado.emailContactoEmergencia" [disabled]="!isAuthorized('Editar')">
+											</label>
+										</section>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+					</div>
+				</div>
+				<div id="s3" class="tab-pane fade">
+					<div class="padding-10">
+						<div>
+
+							<fieldset>
+								<div class="col-12 text-right padding-bottom-10" *ngIf="isAuthorized('Editar')">
+									<button (click)="agregarDocumento()" class="btn btn-default"> Agregar
+									</button>
+								</div>
+								<kendo-grid
+										[data]="view"
+										[pageSize]="pageSize"
+										[skip]="skip"
+										[pageable]="true"
+										(pageChange)="pageChange($event)">
+
+									<kendo-grid-column field="idDocumentoEmpleado" title=" " width="40px" *ngIf="isAuthorized('Editar')">
+										<template kendoGridCellTemplate let-dataItem>
+											<div class="text-center">
+												<a href="javascript:void(0)" class="link" (click)="onDelete(dataItem)">
+													<span class="fa fa-trash"></span></a>
+											</div>
+
+										</template>
+									</kendo-grid-column>
+									<kendo-grid-column field="nombre" title="Nombre"></kendo-grid-column>
+									<kendo-grid-column field="idDocumentoEmpleado" title="Archivo">
+										<template kendoGridCellTemplate let-dataItem>
+											<div class="text-center">
+												<a href="javascript:void(0)" class="link" (click)="onViewDocument(dataItem)">
+													<span class="fa fa-download"></span> Descargar</a>
+											</div>
+
+										</template>
+									</kendo-grid-column>
+
+								</kendo-grid>
+
+								<documento-dialog-form [model]="dataItem" (cancel)="onCancel()" (save)="onSave($event)"></documento-dialog-form>
+							</fieldset>
+						</div>
+					</div>
+				</div>
+
+				<div id="s4" class="tab-pane fade">
+					<div class="padding-10">
+						<fieldset>
+							<div class="col-12 text-right padding-bottom-10"  *ngIf="isAuthorized('Editar')">
+								<button (click)="agregarEducacion()" class="btn btn-default"> Agregar
+								</button>
+							</div>
+							<kendo-grid
+									[data]="viewEducacion"
+									[pageSize]="pageSize"
+									[skip]="skip"
+									[pageable]="true"
+									(pageChange)="pageChange($event)">
+
+								<kendo-grid-column field="idEducacion" title=" " width="40px"  *ngIf="isAuthorized('Editar')">
+									<template kendoGridCellTemplate let-dataItemEducacion>
+										<div class="text-center">
+											<a href="javascript:void(0)" class="link" (click)="onEditarEducacion(dataItemEducacion)">
+												<span class="fa fa-pencil"></span></a>
+										</div>
+									</template>
+								</kendo-grid-column>
+
+								<kendo-grid-column field="idEducacion" title=" " width="40px"  *ngIf="isAuthorized('Editar')">
+									<template kendoGridCellTemplate let-dataItemEducacion>
+										<div class="text-center">
+											<a href="javascript:void(0)" class="link" (click)="onEliminarEducacion(dataItemEducacion)">
+												<span class="fa fa-trash"></span></a>
+										</div>
+
+									</template>
+								</kendo-grid-column>
+								<kendo-grid-column field="nombreNivelEducacion" title="Nivel Educacion"></kendo-grid-column>
+								<kendo-grid-column field="institucion" title="Institucion"></kendo-grid-column>
+								<kendo-grid-column field="fechaInicio" title="Desde"></kendo-grid-column>
+								<kendo-grid-column field="fechaFin" title="Hasta"></kendo-grid-column>
+								<kendo-grid-column field="titulo" title="Titulo"></kendo-grid-column>
+							</kendo-grid>
+
+							<educacion-dialog-form [model]="dataItemEducacion" (cancel)="onCancelarEducacion()" (save)="onGuardarEducacion($event)"></educacion-dialog-form>
+
+
+						</fieldset>
+					</div>
+				</div>
+				<div id="s5" class="tab-pane fade">
+					<div class="padding-10">
+						<div>
+
+							<fieldset>
+
+								<div class="col-12 text-right padding-bottom-10" *ngIf="isAuthorized('Editar')">
+									<button (click)="agregarExperienciaLaboral()" class="btn btn-default"> Agregar
+									</button>
+								</div>
+								<kendo-grid
+										[data]="viewExperienciaLaboral"
+										[pageSize]="pageSize"
+										[skip]="skip"
+										[pageable]="true"
+										(pageChange)="pageChangeExperienciaLaboral($event)">
+
+									<kendo-grid-column field="idExperienciaLaboral" title=" " width="40px" *ngIf="isAuthorized('Editar')">
+										<template kendoGridCellTemplate let-dataItemExperienciaLaboral>
+											<div class="text-center">
+												<a href="javascript:void(0)" class="link" (click)="onEditarExperienciaLaboral(dataItemExperienciaLaboral)">
+													<span class="fa fa-pencil"></span></a>
+											</div>
+										</template>
+									</kendo-grid-column>
+
+									<kendo-grid-column field="idExperienciaLaboral" title=" " width="40px" *ngIf="isAuthorized('Editar')">
+										<template kendoGridCellTemplate let-dataItemExperienciaLaboral>
+											<div class="text-center">
+												<a href="javascript:void(0)" class="link" (click)="onEliminarExperienciaLaboral(dataItemExperienciaLaboral)">
+													<span class="fa fa-trash"></span></a>
+											</div>
+
+										</template>
+									</kendo-grid-column>
+									<kendo-grid-column field="razonSocial" title="Empresa"></kendo-grid-column>
+									<kendo-grid-column field="departamento" title="Departamento"></kendo-grid-column>
+									<kendo-grid-column field="cargo" title="Cargo"></kendo-grid-column>
+									<kendo-grid-column field="fechaInicio" title="Desde"></kendo-grid-column>
+									<kendo-grid-column field="fechaFin" title="Hasta"></kendo-grid-column>
+								</kendo-grid>
+
+								<experiencialaboral-dialog-form [model]="dataItemExperienciaLaboral" (cancel)="onCancelarExperienciaLaboral()" (save)="onAgregarExperienciaLaboral($event)"></experiencialaboral-dialog-form>
+
+
+							</fieldset>
+						</div>
+					</div>
+				</div>
+				<div id="s6" class="tab-pane fade">
+					<div class="padding-10">
+						<div>
+
+							<fieldset>
+
+								<div class="col-12 text-right padding-bottom-10" *ngIf="isAuthorized('Editar')">
+									<button (click)="agregarEquipoEntregado()" class="btn btn-default"> Agregar
+									</button>
+								</div>
+								<kendo-grid
+										[data]="viewEquipoEntregado"
+										[pageSize]="pageSize"
+										[skip]="skip"
+										[pageable]="true"
+										(pageChange)="pageChange($event)">
+
+									<kendo-grid-column field="idEquipoEntregado" title=" " width="40px" *ngIf="isAuthorized('Editar')">
+										<template kendoGridCellTemplate let-dataItemEquipoEntregado>
+											<div class="text-center">
+												<a href="javascript:void(0)" class="link" (click)="onEditarEquipoEntregado(dataItemEquipoEntregado)">
+													<span class="fa fa-pencil"></span></a>
+											</div>
+										</template>
+									</kendo-grid-column>
+
+									<kendo-grid-column field="idEquipoEntregado" title=" " width="40px" *ngIf="isAuthorized('Editar')">
+										<template kendoGridCellTemplate let-dataItemEquipoEntregado>
+											<div class="text-center">
+												<a href="javascript:void(0)" class="link" (click)="onEliminarEquipoEntregado(dataItemEquipoEntregado)">
+													<span class="fa fa-trash"></span></a>
+											</div>
+
+										</template>
+									</kendo-grid-column>
+									<kendo-grid-column field="nombreTipoEquipo" title="Tipo de Equipo"></kendo-grid-column>
+									<kendo-grid-column field="descripcion" title="Descripcion"></kendo-grid-column>
+									<kendo-grid-column field="fechaEntrega" title="Fecha Entrega"></kendo-grid-column>
+									<kendo-grid-column field="fechaDevolucion" title="Fecha Devolucion"></kendo-grid-column>
+									<kendo-grid-column field="nombreEstado" title="Estado"></kendo-grid-column>
+								</kendo-grid>
+
+								<equipoentregado-dialog-form [model]="dataItemEquipoEntregado" (cancel)="onCancelarEquipoEntregado()" (save)="onGuardarEquipoEntregado($event)"></equipoentregado-dialog-form>
+
+
+							</fieldset>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			</div>
+		</div>
+
+
+
+
+	</div>
+
+</div>

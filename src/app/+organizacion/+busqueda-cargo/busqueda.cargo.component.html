@@ -1,0 +1,241 @@
+<div id="content" class="search-view">
+    <p-growl [value]="msgs"></p-growl>
+
+    <div class="row">
+        <div class="page-header">
+            <sa-big-breadcrumbs [items]="['Consulta de Cargos']" icon="group"></sa-big-breadcrumbs>
+        </div>
+
+    </div>
+
+    <sa-widgets-grid>
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="smart-form" >
+                                <kendo-tabstrip>
+                                    <kendo-tabstrip-tab [title]="'B&uacute;squeda R&aacute;pida'" [selected]="true">
+                                        <template kendoTabContent>
+                                            <div class="row">
+                                                <div class="col col-6">
+                                                    <label>Buscar por</label>
+                                                    <label class="input">
+                                                        <input type="text" [(ngModel)]="quickFilter.value" placeholder="Unidad de Negocio, Departamento y/o Proyecto" (keypress)="validaEnter($event)">
+                                                    </label>
+                                                </div>
+                                                <div class="col col-6">
+                                                    <label class="label-dummy">&nbsp;</label>
+                                                    <button type="submit" class="btn btn-lg btn-primary" (click)="onQuickSearck()">
+                                                        Buscar
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </template>
+                                    </kendo-tabstrip-tab>
+                                    <kendo-tabstrip-tab [title]="'B&uacute;squeda Avanzada'">
+                                        <template kendoTabContent>
+                                                <div class="row">
+
+                                                    <section class="col col-4">
+                                                        <label>Unidad de negocio</label>
+                                                        <label class="input">
+                                                            <kendo-dropdownlist
+                                                                    [data]="undnegocios"
+                                                                    [textField]="'nombre'"
+                                                                    [valueField]="'idUnidadDeNegocio'"
+                                                                    [(ngModel)]="busquedaCargos.idUnidadDeNegocio"
+                                                                    [defaultItem]="defaultItem"
+                                                                    [valuePrimitive]="true"
+                                                                    (selectionChange)="actualizarDpto($event)"
+                                                                    [value] = "busquedaCargos.idUnidadDeNegocio"
+                                                                    style="width: 100%;"
+                                                            >
+                                                            </kendo-dropdownlist>
+                                                        </label>
+                                                    </section>
+
+                                                    <section class="col col-4">
+                                                        <label>Departamento</label>
+                                                        <label class="input">
+                                                            <kendo-dropdownlist
+                                                                    [data]="departamentos"
+                                                                    [textField]="'nombre'"
+                                                                    [valueField]="'idDepartamentoArea'"
+                                                                    [valuePrimitive]="true"
+                                                                    [defaultItem]="defaultItemDepartamento"
+                                                                    [(ngModel)]="busquedaCargos.idDepartamentoArea"
+                                                                    [value] = "busquedaCargos.idDepartamentoArea"
+                                                                    (selectionChange)="actualizarProyecto($event)"
+                                                                    style="width: 100%;"
+
+                                                            >
+                                                            </kendo-dropdownlist>
+                                                        </label>
+                                                    </section>
+
+                                                    <section class="col col-4">
+                                                        <label>Proyecto</label>
+                                                        <label class="input">
+                                                            <kendo-dropdownlist
+                                                                    [data]="proyectos"
+                                                                    [textField]="'nombre'"
+                                                                    [valueField]="'idProyecto'"
+                                                                    [valuePrimitive]="true"
+                                                                    [defaultItem]="defaultItemProyecto"
+                                                                    [(ngModel)]="busquedaCargos.idProyecto"
+                                                                    [value] = "busquedaCargos.idProyecto"
+                                                                    style="width: 100%;"
+
+                                                            >
+                                                            </kendo-dropdownlist>
+                                                        </label>
+                                                    </section>
+
+                                                </div>
+
+
+                                                <div class="row">
+
+                                                    <section class="col col-4">
+                                                        <label>Nombre</label>
+                                                        <label class="input">
+                                                            <input type="text"  [(ngModel)]="busquedaCargos.nombre" (keypress)="validaEnter($event)"/>
+                                                        </label>
+                                                    </section>
+
+                                                    <section class="col col-4">
+                                                        <label>Estado</label>
+                                                        <label class="input">
+                                                            <kendo-dropdownlist
+                                                                    [data]="estados"
+                                                                    [textField]="'nombre'"
+                                                                    [valueField]="'codigo'"
+                                                                    [valuePrimitive]="true"
+                                                                    [defaultItem]="defaultItemTablaGeneral"
+                                                                    style="width: 100%;"
+                                                                    [(ngModel)]="busquedaCargos.estado"
+                                                                    [value]="busquedaCargos.estado"
+                                                            >
+                                                            </kendo-dropdownlist>
+                                                        </label>
+                                                    </section>
+
+                                                </div>
+
+                                            <div class="search-bar">
+                                                <button type="button" class="btn btn-lg btn-default" (click)="onLimpiar()">
+                                                    Limpiar
+                                                </button>
+                                                <button type="submit" class="btn btn-lg btn-primary" (click)="onSubmit()">Buscar</button>
+
+                                            </div>
+                                        </template>
+                                    </kendo-tabstrip-tab>
+                                </kendo-tabstrip>
+
+                            </div>
+
+            </article>
+            <!-- END COL -->
+
+        </div>
+
+        <!-- END ROW -->
+
+    </sa-widgets-grid>
+
+    <!-- widget grid -->
+    <sa-widgets-grid>
+
+        <!-- START ROW -->
+        <div class="row">
+
+            <alert *ngIf="noItems" type="info" dismissible="true">
+                <i class="fa-fw fa fa-info"></i>
+                <strong>Info!</strong> No hay información para exportar.
+            </alert>
+
+            <!-- NEW COL START -->
+            <article class="col-sm-12">
+
+                <sa-widget [colorbutton]="false" [editbutton]="false" [fullscreenbutton]="false" [custombutton]="false"
+                           [sortable]="false" [deletebutton]="false" >
+
+                    <header>
+
+
+                        <h2>Resultados {{cargos.length}}</h2>
+
+                    </header>
+                    <div class="widget-body">
+
+                    <fieldset>
+                            <div class="col-12 text-right padding-bottom-10">
+
+                                <button (click)="onNuevoCargo()" class="btn btn-default" *ngIf="isAuthorized('Agregar')"> Nuevo Cargo
+                                </button>
+                            </div>
+                    </fieldset>
+
+                    <fieldset>
+
+                        <div [ngBusy]="{busy: busy, minDuration:1000}"></div>
+                        <kendo-grid
+                                [data]="gridView"
+                                [pageSize]="pageSize"
+                                [skip]="skip"
+                                [pageable]="true"
+                                (pageChange)="pageChangeCargos($event)"
+                        >
+
+
+                            <kendo-grid-column field="idCargo" title=" " [width]="40" *ngIf="isAuthorized('Editar')">
+                                <template kendoGridCellTemplate let-dataItem>
+                                    <div class="text-center">
+                                        <a href="javascript:void(0)" class="link" (click)="onActualizarCargo(dataItem)">
+                                            <span class="fa fa-pencil"></span></a>
+                                    </div>
+                                </template>
+                            </kendo-grid-column>
+
+                            <kendo-grid-column field="idCargo" title=" " [width]="40" *ngIf="!isAuthorized('Editar')">
+                                <template kendoGridCellTemplate let-dataItem>
+                                    <div class="text-center">
+                                        <a href="javascript:void(0)" class="link" (click)="onActualizarCargo(dataItem)">
+                                            <span class="fa fa-pencil"></span></a>
+                                    </div>
+                                </template>
+                            </kendo-grid-column>
+
+                            <kendo-grid-column field="idCargo" title=" " [width]="40" *ngIf="isAuthorized('Eliminar')">
+                                <template kendoGridCellTemplate let-dataItem>
+                                    <div class="text-center">
+                                        <a href="javascript:void(0)" class="link" (click)="confirm(dataItem)">
+                                            <span class="fa fa-trash"></span></a>
+                                    </div>
+                                </template>
+                            </kendo-grid-column>
+
+                            <kendo-grid-column field="nombreUnidadNegocio" title="Unidad De Negocio" [width]="200"></kendo-grid-column>
+                            <kendo-grid-column field="nombreDepartamento" title="Departamento" [width]="350"></kendo-grid-column>
+                            <kendo-grid-column field="nombreProyecto" title="Proyecto" [width]="250"></kendo-grid-column>
+                            <kendo-grid-column field="nombre" title="Nombre" [width]="300"></kendo-grid-column>
+                            <kendo-grid-column field="nombreCargoSuperior" title="Cargo Superior" [width]="250"></kendo-grid-column>
+                            <kendo-grid-column field="estado" title="Estado" [width]="100"></kendo-grid-column>
+                        </kendo-grid>
+
+                        <confirm-dialog-form [model]="dataItem"  (accept)="onEliminarCargo($event)"></confirm-dialog-form>
+
+                    </fieldset>
+                    </div>
+                </sa-widget>
+
+            </article>
+            <!-- END COL -->
+
+        </div>
+
+
+
+    </sa-widgets-grid>
+</div>

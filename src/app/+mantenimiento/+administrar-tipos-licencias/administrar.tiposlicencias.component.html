@@ -1,0 +1,114 @@
+<div id="content">
+
+    <p-growl [value]="msgs"></p-growl>
+    <!--div class="row">
+        <sa-big-breadcrumbs [items]="['Tipo de Licencia']" icon="group" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></sa-big-breadcrumbs>
+    </div-->
+
+    <div class="page-header">
+        <div class="btn-back" (click)="onRegresarBusquedaTiposLicencias()"><i class="ic-arrow-back"></i></div>
+        <sa-big-breadcrumbs [items]="['Tipo de Licencia ']" icon="group"></sa-big-breadcrumbs>
+    </div>
+
+        <!-- row -->
+        <div class="row">
+            <!-- NEW WIDGET START -->
+            <div class="col-lg-12">
+                                   <!-- widget div-->
+                            <div class="well well-sm well-light">
+                                <div class="padding-10">
+
+                                    <div>
+                                        <fieldset>
+                                            <legend>Datos</legend>
+
+                                            <div class="smart-form">
+
+                                                <div class="row">
+                                                    <section class="col col-md-4">
+                                                        <label>C&oacute;digo<span style="color: red">*</span></label>
+                                                        <label [ngClass]="getEditableClass('Editar')">
+                                                            <input type="text" [(ngModel)]="tipoLicencia.codigo" [disabled]="!isAuthorized('Editar')" id="codigo" maxlength="2"/>
+                                                        </label>
+
+                                                    </section>
+                                                    <section class="col col-md-8">
+                                                        <label>Nombre<span style="color: red">*</span></label>
+                                                        <label [ngClass]="getEditableClass('Editar')">
+                                                            <input type="text" [(ngModel)]="tipoLicencia.nombre" [disabled]="!isAuthorized('Editar')" id="nombre"/>
+                                                        </label>
+
+                                                    </section>
+
+
+                                                </div>
+                                                <div class="row">
+                                                    <section class="col col-md-4">
+                                                        <label>Limite Mensual</label>
+                                                        <label [ngClass]="getEditableClass('Editar')">
+                                                            <input style="width: 100%;" type="text" [(ngModel)]="tipoLicencia.limiteMensual" [disabled]="!isAuthorized('Editar')"/>
+                                                        </label>
+
+                                                    </section>
+                                                    <section class="col col-md-4">
+                                                        <label>Limite Anual</label>
+                                                        <label [ngClass]="getEditableClass('Editar')">
+                                                            <input style="width: 100%;" type="text" [(ngModel)]="tipoLicencia.limiteAnual" [disabled]="!isAuthorized('Editar')"/>
+                                                        </label>
+
+                                                    </section>
+                                                    <section class="col col-md-4">
+                                                        <label>Activo para ESS</label>
+                                                        <label class="select">
+                                                            <input type="checkbox" [(ngModel)]="tipoLicencia.activaParaESS" [disabled]="!isAuthorized('Editar')"/>
+                                                        </label>
+
+                                                    </section>
+
+                                                </div>
+                                                <div class="row">
+                                                    <section class="col col-md-4">
+                                                        <label>Estado<span style="color: red">*</span></label>
+                                                        <div>
+                                                            <label class="input">
+                                                                <kendo-dropdownlist id="estados"
+                                                                                    [data]="estados"
+                                                                                    [textField]="'nombre'"
+                                                                                    [valuePrimitive] = "true"
+                                                                                    [defaultItem]="defaultItemEstados"
+                                                                                    [valueField]="'codigo'" style="width: 100%;"
+                                                                                    [(value)]="tipoLicencia.estado"
+                                                                                    (selectionChange)="changeEstado($event)"
+                                                                                    [disabled]="!isAuthorized('Editar')">
+
+                                                                </kendo-dropdownlist>
+                                                            </label>
+                                                        </div>
+                                                    </section>
+
+                                                </div>
+
+                                            </div>
+                                        </fieldset>
+
+                                    </div>
+
+                                </div>
+                                <div class="padding-10">
+                                    <div class="bottom-bar" *ngIf="isAuthorized('Editar')">
+                                        <button (click)="onGuardarTiposLicencias()" class="btn btn-primary" *ngIf="isAuthorized('Editar')"> Guardar</button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+            </div>
+            <!-- WIDGET END -->
+        </div>
+
+        <!-- end row -->
+
+
+
+</div>

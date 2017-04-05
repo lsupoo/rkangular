@@ -1,0 +1,140 @@
+.login-page {
+    background: url(../assets/img/login-background.jpg) no-repeat left center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    font-family: 'Open Sans',"Helvetica","Arial",sans-serif;
+}
+
+.login-page #content {
+    align-items: center;
+    align-content: center;
+    flex-direction: inherit !important;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    margin: 0;
+    min-width: 470px;
+    padding: 0 10% !important;
+    position: relative;
+    overflow: hidden;
+    z-index: 1001;
+}
+
+.login-page .overlay {
+    height: 100%;
+    position: absolute;
+    pointer-events: none;
+    width: 100%;
+    z-index: 1000;
+}
+
+.login-page .login-form {
+    background-color: #FFF;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px 0 rgba(255,255,255,0.16),0 2px 10px 0 rgba(255,255,255,.12);
+    box-sizing: border-box;
+    width: 380px;
+    margin-left: auto;
+    padding: 5px 10px 25px 10px;
+}
+
+.login-page .login-logo {
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.login-page .login-logo img {
+    width: 240px;
+}
+
+.login-page .login-form form {
+    padding: 0 20px;
+}
+
+.login-page .login-form section {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.login-page .login-form > div {
+    padding: 20px;
+}
+
+.login-page .login-form footer {
+    margin-top: 20px;
+}
+
+.login-page .login-form input {
+    border: solid thin #81d4fa;
+    border-radius: 2px;
+    width: 100%;
+}
+
+.login-page .login-form input,
+.login-page .login-form button  {
+    outline: 0;
+    font-size: 14px;
+    height: 36px;
+}
+
+.login-page .login-form i {
+    color: #000;
+    color: rgba(0,0,0,.38);
+    font-size: 20px;
+    position: absolute;
+    right: 10px;
+    top: 22%;
+}
+
+.login-page button {
+    font-weight: 700;
+    width: 100% !important;
+}
+
+.login-page .login-error {
+    background-color: #F44336;
+    border-radius: 2px;
+    color: #FFF;
+    height: 24px;
+    line-height: 24px;
+    padding: 0 10px;
+}
+
+.login-page .login-phrases {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-left: auto;
+    margin-top: 25px;
+    width: 100%;
+}
+
+.login-page .login-phrases div {
+    align-items: center;
+    color: #FFF;
+    display: flex;
+    min-height: 43px;
+    padding: 5px 0;
+    margin-left: auto;
+    text-align: right;
+}
+
+.login-page .login-phrases .primary {
+    background-color: transparent;
+    font-size: 48px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.login-page .login-phrases .secondary {
+    background-color: transparent;
+    font-size: 32px;
+    font-weight: 300;
+}
+
+.login-page .login-phrases span {
+    margin-left: auto;
+    text-shadow: #121a25 2px 2px 3px;
+}

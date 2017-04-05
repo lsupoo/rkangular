@@ -1,0 +1,152 @@
+<div id="content" class="search-view">
+
+    <div class="row">
+        <div class="page-header">
+            <sa-big-breadcrumbs [items]="['Modulos']" icon="group"></sa-big-breadcrumbs>
+        </div>
+    </div>
+
+    <!-- widget grid -->
+    <sa-widgets-grid>
+        <!-- START ROW -->
+        <div class="row">
+            <!-- NEW COL START -->
+            <article class="col-sm-12 col-md-12 col-lg-12">
+                    <!-- widget div-->
+                     <div class="smart-form" >
+                         <kendo-tabstrip>
+                             <kendo-tabstrip-tab [title]="'Busqueda'" [selected]="true">
+                                 <template kendoTabContent>
+                                    <div class="row">
+                                        <section class="col col-3">
+                                            <label>Codigo</label>
+                                            <label class="input">
+                                                <input type="text"  [(ngModel)]="busquedaModulos.codigo" (keypress)="validaEnter($event)"/>
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-3">
+                                            <label>Nombre</label>
+                                            <label class="input">
+                                                <input type="text"  [(ngModel)]="busquedaModulos.nombre" (keypress)="validaEnter($event)"/>
+                                            </label>
+                                        </section>
+
+                                        <section class="col col-3">
+                                            <label>Estado</label>
+                                            <label class="input">
+                                                <kendo-dropdownlist
+                                                         [data]="visibleItems"
+                                                         [defaultItem]="defaultItemTablaGeneral"
+                                                         [textField]="'text'"
+                                                         [valueField]="'value'"
+                                                         style="width: 100%;"
+                                                >
+                                                </kendo-dropdownlist>
+                                            </label>
+                                        </section>
+
+                                    </div>
+                                     <div class="search-bar">
+                                         <button type="button" class="btn btn-lg btn-default" (click)="onLimpiar()">
+                                             Limpiar
+                                         </button>
+                                         <button type="submit" class="btn btn-lg btn-primary" (click)="onSubmit()">Buscar
+                                         </button>
+                                     </div>
+                                 </template>
+                             </kendo-tabstrip-tab>
+                         </kendo-tabstrip>
+                      </div> <!-- end form -->
+                <!-- end widget -->
+            </article>
+            <!-- END COL -->
+        </div>
+        <!-- END ROW -->
+    </sa-widgets-grid>
+    <!-- widget grid -->
+    <sa-widgets-grid>
+        <!-- START ROW -->
+        <div class="row">
+
+            <alert *ngIf="noItems" type="info" dismissible="true">
+                <i class="fa-fw fa fa-info"></i>
+                <strong>Info!</strong> No hay información para exportar.
+            </alert>
+
+            <!-- NEW COL START -->
+            <article class="col-sm-12">
+
+                <sa-widget [colorbutton]="false" [editbutton]="false" [fullscreenbutton]="false" [custombutton]="false"
+                           [sortable]="false" [deletebutton]="false" [togglebutton]="false" >
+
+                    <header>
+
+
+                        <h2>Resultados {{modulosResult.length}}</h2>
+
+                    </header>
+                    <div class="widget-body">
+
+                    <fieldset>
+                            <div class="action-bar">
+                                <button (click)="onNuevoCargo()" class="btn btn-primary" *ngIf="isAuthorized('Agregar')">
+                                <!--i class="fa fa-plus"></i-->
+                                Agregar
+                                </button>
+                            </div>
+                    </fieldset>
+
+                    <fieldset>
+
+                        <div [ngBusy]="{busy: busy, minDuration:1000}"></div>
+                        <kendo-grid
+                                [data]="gridView"
+                                [pageSize]="pageSize"
+                                [skip]="skip"
+                                [pageable]="true"
+                                (pageChange)="pageChangeModulos($event)"
+                        >
+
+
+                            <kendo-grid-column field="idModulo" title=" " [width]="40" *ngIf="isAuthorized('Editar')">
+                                <template kendoGridCellTemplate let-dataItem>
+                                    <div class="text-center">
+                                        <a href="javascript:void(0)" class="link" (click)="onActualizarModulo(dataItem)">
+                                            <span class="fa fa-pencil"></span></a>
+                                    </div>
+                                </template>
+                            </kendo-grid-column>
+
+                            <kendo-grid-column field="idModulo" title=" " [width]="40" *ngIf="!isAuthorized('Editar')">
+                                <template kendoGridCellTemplate let-dataItem>
+                                    <div class="text-center">
+                                        <a href="javascript:void(0)" class="link" (click)="onActualizarModulo(dataItem)">
+                                            <span class="fa fa-eye"></span></a>
+                                    </div>
+                                </template>
+                            </kendo-grid-column>
+
+
+                            <kendo-grid-column field="codigoPadre" title="Codigo Padre" [width]="120"></kendo-grid-column>
+                            <kendo-grid-column field="codigo" title="Codigo" [width]="100"></kendo-grid-column>
+                            <kendo-grid-column field="nombre" title="Nombre" [width]="170"></kendo-grid-column>
+                            <kendo-grid-column field="etiquetaMenu" title="Etiqueta Menu" [width]="170"></kendo-grid-column>
+                            <kendo-grid-column field="orden" title="Orden" [width]="100"></kendo-grid-column>
+                            <kendo-grid-column field="visible" title="Visible" [width]="100"></kendo-grid-column>
+                        </kendo-grid>
+
+
+                    </fieldset>
+                    </div>
+                </sa-widget>
+
+            </article>
+            <!-- END COL -->
+
+        </div>
+
+
+
+    </sa-widgets-grid>
+</div>
