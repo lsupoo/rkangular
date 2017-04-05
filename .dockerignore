@@ -1,7 +1,0 @@
-.git*
-config/
-node_modules/
-.gitignore
-package.json
-tsconfig.json
-tslint.json
