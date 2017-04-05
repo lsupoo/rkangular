@@ -1,0 +1,184 @@
+<div id="content">
+
+	<div class="row">
+
+		<div class="page-header">
+			<div class="btn-back" (click)="onRegresarBusquedaEmpleado()"><i class="ic-arrow-back"></i></div>
+			<sa-big-breadcrumbs [items]="['Permiso ']" icon="group"></sa-big-breadcrumbs>
+		</div>
+
+		<p-growl [value]="msgs"></p-growl>
+
+			<div class="col-lg-12">
+
+							<div class="well well-sm well-light">
+
+								<div class="padding-10">
+
+								<div>
+									<fieldset>
+										<legend>Datos</legend>
+
+										<div class="smart-form">
+
+											<div class="row">
+
+												<section class="col col-md-4">
+													<label>Jefe Inmediato</label>
+													<label class="input state-disabled">
+														<input type="text" [(ngModel)]="historiaLaboralActual.jefeInmediato" disabled="disabled"/>
+													</label>
+
+												</section>
+												<section class="col col-md-2">
+													<label>Periodo</label>
+													<label class="input state-disabled">
+														<input type="text" [(ngModel)]="periodoEmpleadoActual.periodo" disabled="disabled" />
+													</label>
+
+												</section>
+											</div>
+
+											<div class="row">
+
+
+												<section class="col col-md-4">
+													<label>Motivo</label>
+													<label class="input">
+														<kendo-dropdownlist id="motivo"
+																[data]="motivos"
+																[textField]="'nombre'"
+																[valuePrimitive]="true"
+																[defaultItem]="defaultItemMotivo"
+																[(value)]="permisos.motivo"
+																[valueField]="'codigo'" style="width: 100%;"
+																(selectionChange)="cargarMotivo($event)"
+																[disabled]="true"
+														>
+														</kendo-dropdownlist>
+													</label>
+												</section>
+												<section class="col col-md-8">
+													<label>Razon</label>
+													<label class="input state-disabled">
+														<input type="text" [(ngModel)]="permisos.razon" disabled="disabled">
+													</label>
+												</section>
+											</div>
+
+											<div class="row">
+											
+												<section class="col col-md-4">
+														<label>Fecha del Permiso<span style="color: red">*</span></label>
+														<label class="input state-disabled">
+															<i class="icon-append fa fa-calendar"></i>
+															<input type="text" name="fechaPermiso" id="fechaPermiso" saUiDatepicker date-format="dd/MM/yy" 
+															placeholder="Seleccionar una Fecha" 
+															[(ngModel)]="permisos.fecha" (change)="onChangeFecha($event)" readonly="readonly" disabled="disabled"/>
+														</label>
+												</section>
+
+												<section class="col col-md-2">
+														<label>Desde (hh:mm)<span style="color: red">*</span></label>
+														<label class="input state-disabled">
+															<i class="icon-append fa fa-clock-o"></i>
+															<input type="text" name="horaDesde" id="horaDesde" [(ngModel)]="permisos.horaInicio" 
+															smartClockpicker data-autoclose="true" (change)="onChangeHoraInicio($event)" readonly="readonly" disabled="disabled"/>
+														</label>
+													</section>
+													<section class="col col-md-2">
+														<label>Hasta (hh:mm)<span style="color: red">*</span></label>
+														<label class="input state-disabled">
+															<i class="icon-append fa fa-clock-o"></i>
+															<input type="text" name="horaHasta" id="horaHasta" [(ngModel)]="permisos.horaFin" 
+															smartClockpicker data-autoclose="true" (change)="onChangeHoraFin($event)" readonly="readonly" disabled="disabled">
+														</label>
+												</section>
+											</div>
+
+											<div class="row" *ngIf="!isCompensarhoras">
+
+												<section class="col col-md-4">
+													<label>Fecha de Recuperacion<span style="color: red">*</span></label>
+														<label class="input state-disabled">
+															<i class="icon-append fa fa-calendar"></i>
+															<input type="text" id="fechaRecuperacion" saUiDatepicker date-format="dd/MM/yy" 
+															placeholder="Seleccionar una Fecha" [(ngModel)]="permisos.fechaRecuperacion" 
+															(change)="onChangeFechaRecuperacion($event)" readonly="readonly" disabled="disabled"/>
+														</label>
+												</section>
+
+												<section class="col col-md-2">
+														<label>Desde<span style="color: red">*</span></label>
+														<label class="input state-disabled">
+															<i class="icon-append fa fa-clock-o"></i>
+															<input type="text" id="horaDesdeRecuperacion" 
+															[(ngModel)]="permisos.horaInicioRecuperacion" 
+															smartClockpicker data-autoclose="true" 
+															(change)="onChangeHoraInicioRecuperacion($event)" readonly="readonly" disabled="disabled">
+														</label>
+												</section>
+												<section class="col col-md-2">
+														<label>Hasta<span style="color: red">*</span></label>
+														<label class="input state-disabled">
+															<i class="icon-append fa fa-clock-o"></i>
+															<input type="text" id="horaHastaRecuperacion" 
+															[(ngModel)]="permisos.horaFinRecuperacion"
+															smartClockpicker data-autoclose="true" 
+															(change)="onChangeHoraFinRecuperacion($event)" readonly="readonly" disabled="disabled">
+														</label>
+												</section>
+											</div>
+											<div class="row" *ngIf="isCompensarhoras">
+
+													<section class="col col-md-4">
+														<label>Horas por Compensar</label>
+														<label class="input state-disabled">
+															<input type="text" disabled="disabled"/>
+														</label>
+													</section>
+
+											</div>
+
+											<div class="row">
+												<section class="col col-md-4">
+													<label>Estado</label>
+													<label class="input state-disabled">
+														<input type="text" [(ngModel)]="permisos.estadoString" disabled="disabled">
+													</label>
+												</section>
+												<section class="col col-md-8">
+													<label>Comentario Devolucion/Rechazo</label>
+													<label class="input state-disabled">
+														<input type="text" [(ngModel)]="permisos.comentarioResolucion" disabled="disabled">
+													</label>
+
+												</section>
+											</div>
+										</div>
+										<motivo-rechazo-form [model]="dataItem" id="rechazo" (save)="onRechazarPermisoEmpleado($event)"></motivo-rechazo-form>
+										<motivo-devolucion-form [model]="dataItem" id="devolucion" (save)="onDevolverPermisoEmpleado($event)"></motivo-devolucion-form>
+
+									</fieldset>
+
+								</div>
+
+							</div>
+							<div class="padding-10">
+								<div class="bottom-bar">
+									<a (click)="cargarMotivoDevolucion()" class="btn btn-primary" *ngIf="isAuthorized('Devolver') && authorizedButton"> Devolver</a>
+									<a (click)="onAprobarPermisoEmpleado()" class="btn btn-primary" *ngIf="isAuthorized('Aprobar') && authorizedButton"> Aprobar</a>
+									<a (click)="cargarMotivoRechazo()" class="btn btn-primary" *ngIf="isAuthorized('Rechazar') && authorizedButton"> Denegar</a>
+
+								</div>
+
+							</div>
+
+					</div>
+
+			</div>
+
+		</div>
+
+
+</div>

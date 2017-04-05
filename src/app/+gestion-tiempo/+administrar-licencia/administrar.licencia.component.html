@@ -1,0 +1,242 @@
+<div id="content">
+
+	<p-growl [value]="msgs"></p-growl>
+	<div class="row">
+		<!--sa-big-breadcrumbs [items]="['Licencia']" icon="group"
+							class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></sa-big-breadcrumbs-->
+
+		<div class="page-header">
+			<div class="btn-back" (click)="onRegresarBusquedaLicencia()"><i class="ic-arrow-back"></i></div>
+			<sa-big-breadcrumbs [items]="['Licencia ']" icon="group"></sa-big-breadcrumbs>
+		</div>
+
+	<div class="col-lg-12">
+
+
+					<div class="well well-sm well-light">
+
+								<div class="padding-10">
+
+									<div>
+										<fieldset>
+											<legend>Datos</legend>
+
+											<div class="smart-form">
+
+												<div class="row">
+													<section class="col col-4">
+														<label>Empleado<span style="color: red">*</span></label>
+														<label [ngClass]="getEditableClass('Editar')">
+															<i class="icon-append fa fa-search"></i>
+															<ng2-completer id="nombreEmpleadoReq"
+																		   [(ngModel)]="licencia.nombreEmpleado"
+																		   [dataService]="dataServiceEmpleado"
+																		   [minSearchLength]="0"
+																		   (selected)="selectEmpleado($event)"
+																		   [disabled]="!isAuthorized('Editar')">
+															</ng2-completer>
+
+														</label>
+													</section>
+													<section class="col col-md-4">
+														<label>Jefe Inmediato<span style="color: red">*</span></label>
+														<label [ngClass]="getEditableClass('Editar')">
+															<kendo-dropdownlist id="idJefeInmediatoReq"
+																	[data]="historiasLaboralesActuales"
+																	[textField]="'jefeInmediato'"
+																	[valueField]="'idJefeInmediato'"
+																	[defaultItem]="defaultItemHistoriaLaboral"
+																	[(ngModel)]="historiaLaboralActual.idJefeInmediato"
+																	(selectionChange)="selectJefeInmediato($event)"
+																	[valuePrimitive]="true" style="width: 100%;" [disabled]="!isAuthorized('Editar') || !this.storeSessionFilter.isNew"></kendo-dropdownlist>
+
+														</label>
+
+													</section>
+													<section class="col col-md-4">
+														<label>Periodo</label>
+														<label class="input state-disabled">
+															<input type="text" [(ngModel)]="periodoEmpleadoActual.periodo" disabled="disabled"/>
+														</label>
+
+													</section>
+												</div>
+
+												<div class="row">
+
+													<section class="col col-4">
+														<label>Tipo de Licencia<span style="color: red">*</span></label>
+														<label class="input">
+															<kendo-dropdownlist id="idTipoLicenciaReq"
+																				[data]="tipoLicencia"
+																				[textField]="'nombre'"
+																				[defaultItem]="defaultItem"
+																				[valuePrimitive] = "true"
+																				[valueField]="'idTipoLicencia'" style="width: 100%;"
+																				[(value)]="licencia.idTipoLicencia"
+																				(selectionChange)="cargarTipoLicencia($event)"
+																				[disabled]="!isAuthorized('Editar')">
+															</kendo-dropdownlist>
+														</label>
+													</section>
+													<section class="col col-md-8">
+														<label>Comentario<span style="color: red">*</span></label>
+														<label [ngClass]="getEditableClass('Editar')">
+															<input id="comentarioReq" type="text" [(ngModel)]="licencia.comentario"
+																   (keyup)="changeComentario()"
+																   [disabled]="!isAuthorized('Editar')"/>
+														</label>
+
+													</section>
+
+												</div>
+
+												<div class="row">
+
+													<section class="col col-md-2">
+														<label>Fecha Inicio<span style="color: red">*</span></label>
+														<label [ngClass]="getEditableClass('Editar')">
+															<i class="icon-append fa fa-calendar"></i>
+															<input type="text" name="fechaInicio" id="fechaInicioReq" saUiDatepicker date-format="dd/MM/yy"
+																   placeholder="Seleccionar una Fecha"
+																   [(ngModel)]="licencia.fechaInicio" (change)="onChangeFechaInicio($event)" readonly="readonly" [disabled]="!isAuthorized('Editar')"/>
+														</label>
+													</section>
+													<section class="col col-md-2">
+														<label>Fecha Fin<span style="color: red">*</span></label>
+														<label [ngClass]="getEditableClass('Editar')">
+															<i class="icon-append fa fa-calendar"></i>
+															<input type="text" id="fechaFinReq" saUiDatepicker date-format="dd/MM/yy"
+																   placeholder="Seleccionar una Fecha" [(ngModel)]="licencia.fechaFin"
+																   (change)="onChangeFechaFin($event)" readonly="readonly" [disabled]="!isAuthorized('Editar')"/>
+														</label>
+													</section>
+													<section class="col col-md-2">
+														<label>Dias de Licencia</label>
+														<label [ngClass]="getEditableClass('Editar')">
+															<input type="text" [(ngModel)]="licencia.dias" [disabled]="!isAuthorized('Editar')" readonly="readonly"/>
+														</label>
+
+													</section>
+													<section class="col col-md-2">
+														<label>Todo el dia</label>
+														<label class="select">
+															<input type="checkbox" [(ngModel)]="licencia.diaEntero" [disabled]="!isAuthorized('Editar')" (change)="cambiarTodoDia($event)">
+														</label>
+													</section>
+												</div>
+												<div class="row" *ngIf="!isCheckedTodoDia">
+													<section class="col col-md-2">
+														<label>Hora Inicio</label>
+														<label class="input" [ngClass]="getEditableClass('Editar')">
+
+															<p-inputMask id="horaInicio" mask="99:99" [(ngModel)]="licencia.horaInicio" placeholder="00:00"></p-inputMask>
+
+															<!--i class="icon-append fa fa-clock-o"></i>
+															<input type="text" name="horaInicio" id="horaInicio" [(ngModel)]="licencia.horaInicio"
+																   smartClockpicker data-autoclose="true" (change)="onChangeHoraInicio($event)" readonly="readonly" [disabled]="!isAuthorized('Editar')"/-->
+														</label>
+
+													</section>
+													<section class="col col-md-2">
+														<label>Hora Fin</label>
+														<label class="input" [ngClass]="getEditableClass('Editar')">
+
+															<p-inputMask id="horaFin" mask="99:99" [(ngModel)]="licencia.horaFin" placeholder="00:00"></p-inputMask>
+
+															<!--i class="icon-append fa fa-clock-o"></i>
+															<input type="text" name="horaFin" id="horaFin" [(ngModel)]="licencia.horaFin"
+																   smartClockpicker data-autoclose="true" (change)="onChangeHoraFin($event)" readonly="readonly" [disabled]="!isAuthorized('Editar')"/-->
+														</label>
+
+													</section>
+												</div>
+												<div class="row">
+													<section class="col col-md-8">
+														<label>Comentario Resolucion</label>
+														<label [ngClass]="getEditableClass('Editar')">
+															<input id="comentarioResol" type="text" [(ngModel)]="licencia.comentarioResolucion"
+																   [disabled]="true"/>
+														</label>
+													</section>
+												</div>
+
+
+											</div>
+										</fieldset>
+
+									</div>
+								</div>
+
+								<div class="padding-10" style="padding-top:20px!important">
+									<div>
+
+										<legend>Anexar Documentos</legend>
+											<fieldset>
+												<div class="col-12 text-right padding-bottom-10">
+													<button (click)="agregarDocumento()" class="btn btn-default" *ngIf="isAuthorized('Editar') && this.isRhana && (this.licencia.estado=='A' || this.storeSessionFilter.isNew )"> Agregar
+													</button>
+												</div>
+											</fieldset>
+
+
+											<fieldset>
+												<kendo-grid
+														[data]="view"
+														[pageSize]="pageSize"
+														[skip]="skip"
+														[pageable]="true"
+														(pageChange)="pageChange($event)">
+
+													<kendo-grid-column field="idDocumentoEmpleado" title=" " width="40px" *ngIf="isAuthorized('Editar')">
+														<template kendoGridCellTemplate let-dataItem>
+															<div class="text-center">
+																<a href="javascript:void(0)" class="link" (click)="onDelete(dataItem)">
+																	<span class="fa fa-trash-o"></span></a>
+															</div>
+
+														</template>
+													</kendo-grid-column>
+													<kendo-grid-column field="nombre" title="Nombre"></kendo-grid-column>
+													<kendo-grid-column field="idDocumentoEmpleado" title="Archivo" *ngIf="isAuthorized('Editar')">
+														<template kendoGridCellTemplate let-dataItem>
+															<div class="text-center">
+																<a href="javascript:void(0)" class="link" (click)="onViewDocument(dataItem)">
+																	<span class="fa fa-download"></span> Descargar</a>
+															</div>
+
+														</template>
+													</kendo-grid-column>
+
+												</kendo-grid>
+												<administrar-licencia-edit-form [model]="dataItem" (cancel)="onCancel()" (save)="onSave($event)"></administrar-licencia-edit-form>
+												<motivo-licenciarechazo-form [model]="dataItem" (cancel)="onCancel()" (save)="onRechazar($event)"></motivo-licenciarechazo-form>
+											</fieldset>
+
+									</div>
+
+								</div>
+								<div class="padding-10">
+									<div class="bottom-bar">
+										<button (click)="onActualizarLicenciaEmpleado()" class="btn btn-primary btn-lg" *ngIf="isAuthorized('Editar')"> Guardar </button>
+									</div>
+
+								</div>
+								<div class="padding-10">
+									<div class="bottom-bar">
+										<a (click)="onValidarLicenciaEmpleado()" class="btn btn-primary" *ngIf="isAuthorized('Validar') && this.licencia.estado=='A' && this.isRhana"> Validar</a>
+										<a (click)="onAprobarLicenciaEmpleado()" class="btn btn-primary" *ngIf="isAuthorized('Aprobar') && this.licencia.estado=='E' && this.licencia.idAtendidoPor==this.currentUser.idEmpleado"> Aprobar</a>
+										<a (click)="cargarMotivoRechazo()" class="btn btn-primary" *ngIf="isAuthorized('Rechazar') && ((this.licencia.estado=='A' && this.isRhana) || (this.licencia.estado=='E' && this.licencia.idAtendidoPor==this.currentUser.idEmpleado))"> Denegar</a>
+
+									</div>
+
+								</div>
+
+
+
+							</div>
+
+			</div>
+		</div>
+
+</div>

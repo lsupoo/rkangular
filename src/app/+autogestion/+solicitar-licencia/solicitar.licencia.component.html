@@ -1,0 +1,232 @@
+<div id="content">
+    <p-blockUI [blocked]="blockedUI"></p-blockUI>
+    <p-growl [value]="msgs"></p-growl>
+
+    <div class="row">
+        <div class="page-header">
+            <sa-big-breadcrumbs [items]="['Solicitar Licencia']" icon="group"></sa-big-breadcrumbs>
+        </div>
+        <!-- NEW WIDGET START -->
+        <div class="col-lg-12">
+            <div class="tool-bar">
+                <div class="btn-options">
+                    <button (click)="limpiarDatosLicencia()" class="btn btn-default" id="btnNueva">Nueva Solicitud
+                    </button>
+                    <button (click)="verSolicitudLicencia()" class="btn btn-default" id="btnVer">Ver Solicitudes
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="well well-sm well-light">
+                <div class="padding-10">
+                    <div>
+                        <fieldset>
+                            <legend>Datos</legend>
+                            <div class="smart-form">
+                                <div class="row">
+                                    <section class="col col-md-4">
+                                        <label>Jefe Inmediato<span style="color: red">*</span></label>
+                                        <label class="input">
+                                            <kendo-dropdownlist id="idJefeInmediatoReq"
+                                                                [data]="historiasLaboralesActuales"
+                                                                [textField]="'jefeInmediato'"
+                                                                [valueField]="'idJefeInmediato'"
+                                                                [defaultItem]="defaultItemHistoriaLaboral"
+                                                                [(ngModel)]="historiaLaboralActual.idJefeInmediato"
+                                                                (selectionChange)="selectJefeInmediato($event)"
+                                                                [valuePrimitive]="true" style="width: 100%;">
+                                            </kendo-dropdownlist>
+                                        </label>
+
+                                    </section>
+                                    <section class="col col-md-4">
+                                        <label>Periodo</label>
+                                        <label class="input state-disabled">
+                                            <input type="text" [(ngModel)]="periodoEmpleadoActual.periodo"
+                                                   disabled="disabled"/>
+                                        </label>
+
+                                    </section>
+                                </div>
+
+                                <div class="row">
+
+                                    <section class="col col-md-4">
+                                        <label>Tipo de Licencia<span style="color: red">*</span></label>
+                                        <label class="input">
+                                            <kendo-dropdownlist id="idTipoLicenciaReq"
+                                                                [data]="tipoLicencia"
+                                                                [textField]="'nombre'"
+                                                                [defaultItem]="defaultItem"
+                                                                [valuePrimitive]="true"
+                                                                [valueField]="'idTipoLicencia'" style="width: 100%;"
+                                                                [(value)]="licencia.idTipoLicencia"
+                                                                (selectionChange)="cargarTipoLicencia($event)"
+                                                                [disabled]="!isAuthorized('Editar')">
+                                            </kendo-dropdownlist>
+                                        </label>
+                                    </section>
+                                    <section class="col col-md-8">
+                                        <label>Comentario<span style="color: red">*</span></label>
+                                        <label class="input">
+                                            <input id="comentarioReq" type="text"
+                                                   [(ngModel)]="licencia.comentario"
+                                                   (keyup)="changeComentario()"
+                                                   [disabled]="!isAuthorized('Editar')"/>
+                                        </label>
+                                    </section>
+                                </div>
+
+                                <div class="row">
+                                    <section class="col col-md-2">
+                                        <label>Fecha Inicio<span style="color: red">*</span></label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-calendar"></i>
+                                            <input type="text" id="fechaInicioReq" saUiDatepicker date-format="dd/MM/yy"
+                                                   placeholder="Seleccionar una Fecha"
+                                                   [(ngModel)]="licencia.fechaInicio"
+                                                   (change)="onChangeFechaInicio($event)" readonly="readonly"
+                                                   [disabled]="!isAuthorized('Editar')"/>
+                                        </label>
+                                    </section>
+                                    <section class="col col-md-2">
+                                        <label>Fecha Fin<span style="color: red">*</span></label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-calendar"></i>
+                                            <input type="text" id="fechaFinReq" saUiDatepicker date-format="dd/MM/yy"
+                                                   placeholder="Seleccionar una Fecha" [(ngModel)]="licencia.fechaFin"
+                                                   (change)="onChangeFechaFin($event)" readonly="readonly"
+                                                   [disabled]="!isAuthorized('Editar')"/>
+                                        </label>
+                                    </section>
+                                    <section class="col col-md-2">
+                                        <label>Dias de Licencia</label>
+                                        <label class="input">
+                                            <input type="text" [(ngModel)]="licencia.dias"
+                                                   [disabled]="!isAuthorized('Editar')" readonly="readonly"/>
+                                        </label>
+
+                                    </section>
+                                    <section class="col col-md-2">
+                                        <label>Todo el dia</label>
+                                        <label class="select">
+                                            <input type="checkbox" [(ngModel)]="licencia.diaEntero"
+                                                   (change)="cambiarTodoDia($event)"
+                                                   [disabled]="!isAuthorized('Editar')">
+                                        </label>
+                                    </section>
+                                </div>
+                                <div class="row" *ngIf="!isCheckedTodoDia">
+                                    <section class="col col-md-2">
+                                        <label>Hora Inicio</label>
+                                        <label class="input">
+                                            <p-inputMask id="horaInicio" mask="99:99" [(ngModel)]="licencia.horaInicio"
+                                                         placeholder="00:00"></p-inputMask>
+                                        </label>
+
+                                    </section>
+                                    <section class="col col-md-2">
+                                        <label>Hora Fin</label>
+                                        <label class="input">
+                                            <p-inputMask id="horaFin" mask="99:99" [(ngModel)]="licencia.horaFin"
+                                                         placeholder="00:00"></p-inputMask>
+                                        </label>
+                                    </section>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                    </div>
+
+                </div>
+                <div class="padding-10" style="padding-top:20px!important">
+
+                    <div>
+
+                        <legend>Anexar Documentos</legend>
+                        <div class="widget-body">
+                            <fieldset>
+                                <div class="col-12 text-right padding-bottom-10" *ngIf="isAuthorized('Editar')">
+                                    <button (click)="agregarDocumento()" class="btn btn-default"
+                                            *ngIf="isAuthorized('Editar')"><i class="fa fa-plus"></i>Agregar
+                                    </button>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <kendo-grid
+                                        [data]="view"
+                                        [pageSize]="pageSize"
+                                        [skip]="skip"
+                                        [pageable]="true"
+                                        (pageChange)="pageChangeSolicitudLicencia($event)">
+                                    <kendo-grid-column field="idDocumentoEmpleado" title=" " width="40px"
+                                                       *ngIf="isAuthorized('Editar')">
+                                        <template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-center">
+                                                <a href="javascript:void(0)" class="link" (click)="onDelete(dataItem)">
+                                                    <span class="fa fa-trash-o"></span></a>
+                                            </div>
+
+                                        </template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="nombre" title="Nombre"></kendo-grid-column>
+                                    <kendo-grid-column field="idDocumentoEmpleado" title="Archivo"
+                                                       *ngIf="isAuthorized('Editar')">
+                                        <template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-center">
+                                                <a href="javascript:void(0)" class="link"
+                                                   (click)="onViewDocument(dataItem)">
+                                                    <span class="fa fa-download"></span> Descargar</a>
+                                            </div>
+
+                                        </template>
+                                    </kendo-grid-column>
+
+                                </kendo-grid>
+                                <licencia-document-edit-form [model]="dataItem" (cancel)="onCancel()"
+                                                             (save)="onSave($event)"></licencia-document-edit-form>
+                            </fieldset>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="padding-10">
+                    <div class="bottom-bar">
+                        <button (click)="showMessageLicencia()" class="btn btn-primary" id="btnGuardar">Solicitar
+                            Licencia
+                        </button>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <kendo-dialog *ngIf="confirmActive" (close)="onCloseLicencia()">
+
+        <kendo-dialog-titlebar style="background-color: #E5702A;">
+            Confirmacion
+        </kendo-dialog-titlebar>
+        <div class="modal-body">
+            <div class="smart-form">
+
+                <div class="row">
+                    <section class="col col-md-12 text-align-center">
+                        <label class="control-label">La solicitud se enviara a su jefe. ¿Desea continuar?</label>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="onActualizarLicenciaEmpleado($event)"> Guardar
+            </button>
+            <button type="button" class="btn btn-default" (click)="onCancel($event)"> Cancelar
+            </button>
+        </div>
+    </kendo-dialog>
+
+</div>

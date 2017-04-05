@@ -1,0 +1,218 @@
+<div id="content">
+    <simple-notifications [options]="options"></simple-notifications>
+
+  <div class="row">
+    <sa-big-breadcrumbs [items]="['Solicitar Corrección']" icon="group"
+                        class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></sa-big-breadcrumbs>
+    <!-- <sa-stats></sa-stats>  -->
+  </div>
+ <sa-widgets-grid>
+  <div class="row">
+
+    <div class="col-12">
+
+    <sa-widget [colorbutton]="false" [editbutton]="false" [fullscreenbutton]="false" [custombutton]="false"
+                   [sortable]="false">
+
+        <div class="smart-form">
+            <div class="row">
+                <section class="col col-md-12 text-right">
+                    <a (click)="onRegistrarSolicitudCorreccionMarcacion()" class="btn btn-primary btn-lg"> Guardar</a>
+                </section>
+            </div>
+        </div>
+        <!-- body div-->
+        <div>
+
+            <!-- widget content -->
+            <div class="widget-body">
+
+                <div class="well well-sm well-light">
+
+                    <div class="padding-10">
+
+                        <div>
+                            <fieldset>
+                                <legend>Datos de Empleado</legend>
+
+                                <div class="smart-form">
+                                    <div class="row">
+                                        <section class="col col-4">
+                                            <label>Empleado</label>
+                                            <label class="input state-disabled">
+                                                <input type="text"  [(ngModel)]="marcacion.nombreCompletoEmpleado" disabled="disabled"/>
+                                            </label>
+                                        </section>
+                                    </div>
+
+                                </div>
+                            </fieldset>
+
+                        </div>
+
+
+                        <div>
+                            <fieldset>
+                                <legend>Marcacion Registrada</legend>
+
+                                <div class="smart-form">
+
+                                    <div class="row">
+                                        <section class="col col-3">
+                                            <label>Fecha</label>
+                                            <label class="input state-disabled">
+                                                <i class="icon-append fa fa-calendar"></i>
+                                                <input type="text"   [(ngModel)]="marcacion.fecha" saUiDatepicker date-format="dd/MM/yy" disabled="disabled"/>
+                                            </label>
+                                        </section>
+
+                                    </div>
+
+
+                                    <div class="row">
+                                        <section class="col col-3">
+                                            <label>Hora Ingreso</label>
+                                            <label class="input state-disabled">
+                                                <input type="text"  [(ngModel)]="marcacion.horaIngreso" disabled="disabled"/>
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label>Hora Inicio Almuerzo</label>
+                                            <label class="input state-disabled">
+                                                <input type="text"  [(ngModel)]="marcacion.horaInicioAlmuerzo" disabled="disabled"/>
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label>Hora Fin Almuerzo</label>
+                                            <label class="input state-disabled">
+                                                <input type="text"  [(ngModel)]="marcacion.horaFinAlmuerzo" disabled="disabled"/>
+                                            </label>
+                                        </section>
+                                        <section class="col col-3">
+                                            <label>Hora Salida</label>
+                                            <label class="input state-disabled">
+                                                <input type="text"  [(ngModel)]="marcacion.horaSalida" disabled="disabled"/>
+                                            </label>
+                                        </section>
+
+                                    </div>
+                                </div>
+                             </fieldset>
+                        </div>
+
+                        <div>
+                            <fieldset>
+                                <legend>Solicitud de Cambio</legend>
+                                <div class="smart-form">
+
+                                    <div class="row">
+                                        <section class="col col-2">
+                                            <label>Cambiar</label>
+                                            <label class="select">
+                                                <input type="checkbox" [(ngModel)]="solicitudCambioMarcacion.cambiarIngreso" (change)="cambiarHoraIngreso($event)"/>
+                                            </label>
+                                        </section>
+                                        <section class="col col-2">
+                                            <label>Hora Ingreso</label>
+                                            <label [class]="!isCheckedHoraIngreso?'input state-disabled':'input'">
+                                                <i class="icon-append fa fa-clock-o"></i>
+                                                <input type="text"  [(ngModel)]="solicitudCambioMarcacion.horaIngreso" smartClockpicker data-autoclose="true" (change)="onChangeHoraIngreso($event)" [disabled]="!isCheckedHoraIngreso" readonly="readonly"/>
+                                            </label>
+                                        </section>
+                                        <section class="col col-8">
+                                            <label>Razon de Cambio</label>
+                                            <label [class]="!isCheckedHoraIngreso?'input state-disabled':'input'">
+                                                <input type="text" [(ngModel)]="solicitudCambioMarcacion.razonCambioHoraIngreso" [disabled]="!isCheckedHoraIngreso"/>
+                                            </label>
+                                        </section>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <section class="col col-2">
+                                            <label>Cambiar</label>
+                                            <label class="select">
+                                                <input type="checkbox" [(ngModel)]="solicitudCambioMarcacion.cambiarInicioAlmuerzo" (change)="cambiarHoraIniAlmuerzo($event)"/>
+                                            </label>
+                                        </section>
+                                        <section class="col col-2">
+                                            <label>Hora Inicio Almuerzo</label>
+                                            <label [class]="!isCheckedHoraIniAlmuerzo?'input state-disabled':'input'">
+                                                <i class="icon-append fa fa-clock-o"></i>
+                                                <input type="text"  [(ngModel)]="solicitudCambioMarcacion.horaInicioAlmuerzo" smartClockpicker data-autoclose="true" (change)="onChangeHoraInicioAlmuerzo($event)" [disabled]="!isCheckedHoraIniAlmuerzo" readonly="readonly"/>
+                                            </label>
+                                        </section>
+                                        <section class="col col-8">
+                                            <label>Razon de Cambio</label>
+                                            <label [class]="!isCheckedHoraIniAlmuerzo?'input state-disabled':'input'">
+                                                <input type="text" [(ngModel)]="solicitudCambioMarcacion.razonCambioHoraInicioAlmuerzo"  [disabled]="!isCheckedHoraIniAlmuerzo"/>
+                                            </label>
+                                        </section>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <section class="col col-2">
+                                            <label>Cambiar</label>
+                                            <label class="select">
+                                                <input type="checkbox" [(ngModel)]="solicitudCambioMarcacion.cambiarFinAlmuerzo" (change)="cambiarHoraFinAlmuerzo($event)"/>
+                                            </label>
+                                        </section>
+                                        <section class="col col-2">
+                                            <label>Hora Fin Almuerzo</label>
+                                            <label [class]="!isCheckedHoraFinAlmuerzo?'input state-disabled':'input'">
+                                                <i class="icon-append fa fa-clock-o"></i>
+                                                <input type="text"  [(ngModel)]="solicitudCambioMarcacion.horaFinAlmuerzo" smartClockpicker data-autoclose="true" (change)="onChangeHoraFinAlmuerzo($event)" [disabled]="!isCheckedHoraFinAlmuerzo" readonly="readonly"/>
+                                            </label>
+                                        </section>
+                                        <section class="col col-8">
+                                            <label>Razon de Cambio</label>
+                                            <label [class]="!isCheckedHoraFinAlmuerzo?'input state-disabled':'input'">
+                                                <input type="text" [(ngModel)]="solicitudCambioMarcacion.razonCambioHoraFinAlmuerzo" [disabled]="!isCheckedHoraFinAlmuerzo"/>
+                                            </label>
+                                        </section>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <section class="col col-2">
+                                            <label>Cambiar</label>
+                                            <label class="select">
+                                                <input type="checkbox" [(ngModel)]="solicitudCambioMarcacion.cambiarSalida" (change)="cambiarHoraSalida($event)"/>
+                                            </label>
+                                        </section>
+                                        <section class="col col-2">
+                                            <label>Hora Salida</label>
+                                            <label [class]="!isCheckedHoraSalida?'input state-disabled':'input'">
+                                                <i class="icon-append fa fa-clock-o"></i>
+                                                <input type="text" [(ngModel)]="solicitudCambioMarcacion.horaSalida" smartClockpicker data-autoclose="true" (change)="onChangeHoraIngreso($event)" [disabled]="!isCheckedHoraSalida" readonly="readonly"/>
+                                            </label>
+                                        </section>
+                                        <section class="col col-8">
+                                            <label>Razon de Cambio</label>
+                                            <label [class]="!isCheckedHoraSalida?'input state-disabled':'input'">
+                                                <input type="text" [(ngModel)]="solicitudCambioMarcacion.razonCambioHoraSalida" [disabled]="!isCheckedHoraSalida"/>
+                                            </label>
+                                        </section>
+
+                                    </div>
+
+                                </div>
+                            </fieldset>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+          <!-- end widget div -->
+        </sa-widget>
+        <!-- end widget -->
+    </div>
+  </div>
+ </sa-widgets-grid>
+</div>

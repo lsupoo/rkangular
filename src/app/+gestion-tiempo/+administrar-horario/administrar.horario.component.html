@@ -1,0 +1,139 @@
+<div id="content">
+
+	<p-growl [value]="msgs"></p-growl>
+
+	<div class="row">
+
+		<div class="page-header">
+			<div class="btn-back" (click)="onRegresarBusquedaHorario()"><i class="ic-arrow-back"></i></div>
+			<sa-big-breadcrumbs [items]="['Horario ']" icon="group"></sa-big-breadcrumbs>
+		</div>
+
+			<div class="col-lg-12">
+
+							<div class="well well-sm well-light">
+
+								<div class="padding-10">
+
+									<div>
+										<fieldset>
+											<legend>Datos</legend>
+
+											<div class="smart-form">
+
+												<div class="row">
+
+													<section class="col col-md-4">
+														<label>Tipo Horario<span style="color: red">*</span></label>
+														<label class="input">
+															<kendo-dropdownlist [data]="tiposHorario" [textField]="'nombre'" [valueField]="'codigo'" [(ngModel)]="horario.tipoHorario" [defaultItem]="defaultItem" [valuePrimitive]="true" style="width: 100%;" (selectionChange)="onChangeTipoHorario($event)" [disabled]="isEdit"></kendo-dropdownlist>
+														</label>
+
+													</section>
+													<section class="col col-md-4">
+														<label>Proyecto</label>
+														<label class="input ">
+															<kendo-dropdownlist
+																	[data]="proyecto"
+																	[textField]="'nombre'"
+																	[valueField]="'idProyecto'"
+																	[defaultItem]="defaultItem"
+																	[(ngModel)]="horario.idProyecto"
+																	[valuePrimitive]="true" style="width: 100%;"
+																	[disabled]="isEmpresa"></kendo-dropdownlist>
+														</label>
+
+													</section>
+
+													<section class="col col-md-4">
+														<label>Por Defecto</label>
+														<label class="select">
+															<input type="checkbox" [(ngModel)]="horario.porDefecto" />
+														</label>
+													</section>
+												</div>
+
+												<div class="row">
+
+													<section class="col col-md-4">
+														<label>Nombre<span style="color: red">*</span></label>
+														<label [class]="classEdit">
+															<input type="text"  id="nombreHorario" [(ngModel)]="horario.nombre" [disabled]="isEdit" (keyup)="ingresaNombreHorario()"/>
+														</label>
+													</section>
+													<section class="col col-md-4">
+														<label>Estado<span style="color: red">*</span></label>
+														<label  class="input">
+															<kendo-dropdownlist [data]="estados" [textField]="'nombre'" [valueField]="'codigo'" [defaultItem]="defaultItem"  [(ngModel)]="horario.estado" [valuePrimitive]="true" style="width: 100%;" ></kendo-dropdownlist>
+														</label>
+
+													</section>
+												</div>
+
+												<div class="row">
+
+													<section class="col col-md-4">
+														<label>Horas por Semana<span style="color: red">*</span></label>
+														<label class="input">
+															<input type="text" id="horasSemana" [(ngModel)]="horario.horasSemanal" (keyup)="ingresaHorasSemanal()" />
+														</label>
+													</section>
+
+													<section class="col col-md-4">
+														<label>Horas Cubiertas</label>
+														<label class="input state-disabled">
+															<input type="text" id="horasCubiertas" [(ngModel)]="horario.horasCubiertas" [disabled]="true"/>
+														</label>
+													</section>
+												</div>
+
+											</div>
+										</fieldset>
+									</div>
+								</div>
+
+								<div class="padding-10">
+									<div>
+										<fieldset>
+											<kendo-grid [data]="horarioDias" >
+
+												<kendo-grid-column field="idHorarioDia" title=" " [width]="40" *ngIf="isAuthorized('Editar')">
+													<template kendoGridCellTemplate let-dataItemHorarioDia>
+														<div class="text-center">
+															<a href="javascript:void(0)" class="link" (click)="onEditarHorarioDia(dataItemHorarioDia)">
+																<span class="fa fa-pencil"></span></a>
+														</div>
+													</template>
+												</kendo-grid-column>
+
+
+												<kendo-grid-column field="nombreDiaSemana" title="Dia" [width]="150"></kendo-grid-column>
+												<kendo-grid-column field="laboral" title="Laboral" [width]="200"></kendo-grid-column>
+												<kendo-grid-column field="entrada" title="Entrada" [width]="100"></kendo-grid-column>
+												<kendo-grid-column field="salida" title="Salida" [width]="100"></kendo-grid-column>
+												<kendo-grid-column field="tiempoAlmuerzo" title="Almuerzo" [width]="100"></kendo-grid-column>
+											</kendo-grid>
+											<horario-dia-dialog-form [model]="dataItemHorarioDia" (cancel)="onCancelarHorarioDia()" (save)="onAgregarHorarioDia($event)"></horario-dia-dialog-form>
+
+										</fieldset>
+
+									</div>
+
+								</div>
+
+
+								<div class="padding-10">
+									<div class="bottom-bar">
+										<button (click)="onRegistrarHorario()" class="btn btn-primary" *ngIf="isAuthorized('Editar')"> Guardar</button>
+									</div>
+
+								</div>
+
+							</div>
+
+
+			</div>
+		</div>
+
+
+</div>
