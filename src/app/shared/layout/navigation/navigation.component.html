@@ -1,0 +1,30 @@
+<aside id="left-panel">
+
+  <!-- User info -->
+  <sa-login-info></sa-login-info>
+  <!-- end user info -->
+
+  <nav>
+
+    <ul id="menuRunaKuna" saSmartMenu>
+      <li *ngFor="let moduloPadre of modulos">
+
+        <a href="#"><i [class]="moduloPadre.imageClass"></i>
+          <span class="menu-item-parent">{{moduloPadre.nombre | i18n}}</span>
+        </a>
+        <ul>
+          <li routerLinkActive="active" *ngFor="let modulo of moduloPadre.subModulos">
+            <a [routerLink]="[modulo.url]">{{modulo.nombre | i18n}}</a>
+
+          </li>
+        </ul>
+
+      </li>
+
+
+    </ul>
+  </nav>
+
+  <sa-minify-menu></sa-minify-menu>
+
+</aside>

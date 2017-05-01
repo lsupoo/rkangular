@@ -1,0 +1,62 @@
+.lockscreen-page {
+    /*background: url(../../../assets/img/lockscreen-background.jpg) no-repeat left center;*/
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    color: #FFF;
+    font-family: 'Open Sans', "Helvetica", "Arial", sans-serif;
+    position: relative;
+}
+
+.lockscreen-page .logo-section {
+    left: 20px;
+    position: absolute;
+    top: 20px;
+}
+
+.lockscreen-page .logo-section img {
+    width: 180px;
+}
+
+.lockscreen-page #content {
+    align-items: center;
+    align-content: center;
+    flex-direction: inherit !important;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin: 0;
+    min-width: 500px;
+    padding: 0 7% !important;
+    position: relative;
+    overflow: hidden;
+    z-index: 1001;
+}
+
+.lockscreen-page .text-group h1 {
+    font-size: 130px;
+    font-weight: 600;
+    margin-top: 0;
+}
+
+.lockscreen-page .text-group h3 {
+    font-size: 64px;
+    font-weight: 300;
+    margin-bottom: 40px;
+    white-space: nowrap;
+}
+
+.lockscreen-page .btn {
+    background-color: #ff5722;
+    border-color: #ff5722;
+    border-radius: 2px;
+    font-size: 20px;
+    height: 52px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.lockscreen-page .btn:hover {
+    background-color: #f4511e !important;
+    border-color: #f4511e !important;
+}
